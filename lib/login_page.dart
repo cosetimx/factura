@@ -5,15 +5,14 @@ import 'dart:io';
 import 'package:factura/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:http/http.dart' as http;
-import 'package:universal_platform/universal_platform.dart';
+//import 'package:universal_platform/universal_platform.dart';
 
 import 'Globals.dart' as globals;
 import 'main.dart';
 
 Future<Post> createPost(Uri url, {required Map body}) async {
-  return http.post( url, body: body).then((http.Response response) {
+  return http.post(url, body: body).then((http.Response response) {
     final int statusCode = response.statusCode;
 
     if (statusCode < 200 || statusCode > 400 || json == null) {
@@ -24,21 +23,18 @@ Future<Post> createPost(Uri url, {required Map body}) async {
   });
 }
 
-
 class LoginPage extends StatelessWidget {
   static String tag = 'login-page';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: LoginPageMap()),
+      body: Center(child: LoginPageMap()),
     );
   }
-
 }
-class LoginPageMap extends StatefulWidget {
 
+class LoginPageMap extends StatefulWidget {
   @override
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -127,21 +123,20 @@ class LoginPageState extends State<LoginPageMap> {
                 _loading = true;
               });
               try {
-
                 String URLs =
-                    'https://www.halcontracking.com/php/factura/logins.php?username=${users.text}&password=${passwd.text}';
+                    'https://www.halcontracking.com/php/factura/login.php?username=${users.text}&password=${passwd.text}';
 
                 var response = await http.get(Uri.parse(URLs));
 
-                var data = json.decode(response.body);
-
+                Map data = json.decode(response.body);
+                print('Data $data');
                 if (data['success'] == 1) {
                   globals.PASSWD = passwd.text;
                   globals.USERS = users.text;
                   globals.NOMBRE = data['result'][0]['nombre'];
                   globals.TIPO = data['result'][0]['tipo'];
                   globals.USERLIS = data['result'][0]['usuariolis'];
-               //   Navigator.pushNamed(context, HomePage.tag);
+                     Navigator.pushNamed(context, HomePage.tag);
                   _loading = false;
                 } else {
                   setState(() {
@@ -175,13 +170,12 @@ class LoginPageState extends State<LoginPageMap> {
             iconSize: 48,
             tooltip: 'Ingresar',
             icon: Icon(
-              AntDesign.login,
+              Icons.login,
               color: Colors.teal,
             ),
           ),
           Text('Ingresar', style: TextStyle(color: Colors.teal, fontSize: 20))
         ]));
-
 
     final body = Column(
       // shrinkWrap: true,
@@ -192,7 +186,7 @@ class LoginPageState extends State<LoginPageMap> {
         logo,
         // Version
         Text(
-          'V 2.67',
+          'V 1.00',
           style: TextStyle(fontSize: 8.0, color: Colors.teal),
         ),
         user,
@@ -205,11 +199,7 @@ class LoginPageState extends State<LoginPageMap> {
     return new Scaffold(
         resizeToAvoidBottomInset: false,
         //backgroundColor: Colors.white,
-        body: Stack(children: <Widget>[
-          SingleChildScrollView(
-            child: body
-          )
-        ]));
+        body: Stack(children: <Widget>[SingleChildScrollView(child: body)]));
   }
 }
 
@@ -240,30 +230,12 @@ class ShowDialogToDismiss extends StatelessWidget {
   final String title;
   final String buttonText;
 
-  ShowDialogToDismiss({required this.title, required this.buttonText, required this.content});
+  ShowDialogToDismiss(
+      {required this.title, required this.buttonText, required this.content});
 
   @override
   Widget build(BuildContext context) {
-    if (!UniversalPlatform.isIOS) {
-      return AlertDialog(
-        title: new Text(
-          title,
-        ),
-        content: new Text(
-          this.content,
-        ),
-        actions: <Widget>[
-          new FlatButton(
-            child: new Text(
-              '$buttonText',
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    } else {
+
       return CupertinoAlertDialog(
           title: Text(
             title,
@@ -283,6 +255,6 @@ class ShowDialogToDismiss extends StatelessWidget {
               },
             )
           ]);
-    }
-  }
+
+}
 }
