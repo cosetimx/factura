@@ -21,13 +21,13 @@ class XmobeMenu extends StatelessWidget {
         child: new ListView(children: <Widget>[
       new UserAccountsDrawerHeader(
         accountEmail: null,
-        accountName: new Text("Bienvenido"),
-        currentAccountPicture:
+        accountName: new Text("Bienvenido \n\r ${globals.NOMBRE}"),
+        /* currentAccountPicture:
         ClipOval(
           child: Image.asset(
               'assets/logo.jpg',
               fit: BoxFit.fill),
-        ),),
+        ), */ ), 
       new ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
