@@ -22,12 +22,12 @@ class XmobeMenu extends StatelessWidget {
       new UserAccountsDrawerHeader(
         accountEmail: null,
         accountName: new Text("Bienvenido \n\r ${globals.NOMBRE}"),
-        /* currentAccountPicture:
+         currentAccountPicture:
         ClipOval(
           child: Image.asset(
               'assets/logo.jpg',
               fit: BoxFit.fill),
-        ), */ ), 
+        ),  ), 
       new ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,

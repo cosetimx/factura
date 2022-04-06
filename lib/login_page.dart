@@ -71,7 +71,7 @@ class LoginPageState extends State<LoginPageMap> {
       child: Text(
         'REVISIÓN DE FACTURAS',
         style: TextStyle(
-            fontSize: 28.0, color: Colors.teal[800], fontStyle: FontStyle.normal),
+            fontSize: 18.0, color: Colors.teal[800], fontStyle: FontStyle.normal),
         textAlign: TextAlign.center,
       ),
     );
@@ -182,8 +182,9 @@ class LoginPageState extends State<LoginPageMap> {
       // padding: EdgeInsets.only(left: 4.0, right: 4.0),
       children: <Widget>[
         SizedBox(height: 40.0),
-            control,
-       // logo,
+            
+        logo,
+        control,
         // Version
         Text(
           'V 1.00',
