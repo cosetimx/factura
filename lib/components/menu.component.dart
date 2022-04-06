@@ -25,7 +25,7 @@ class XmobeMenu extends StatelessWidget {
          currentAccountPicture:
         ClipOval(
           child: Image.asset(
-              'assets/logo.jpg',
+              'assets/logo.png',
               fit: BoxFit.fill),
         ),  ), 
       new ListView.builder(

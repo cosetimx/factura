@@ -62,7 +62,7 @@ class LoginPageState extends State<LoginPageMap> {
       tag: 'hero',
       child: Container(
         padding: EdgeInsets.only(left: 12.0, right: 12.0),
-        child: Image.asset('assets/logo.jpg'),
+        child: Image.asset('assets/logo.png'),
       ),
     );
 
