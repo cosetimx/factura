@@ -57,7 +57,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/logo.jpg
+    - assets/logo.png
     - assets/cert/gdig2.crt.pem
 
   fonts:
