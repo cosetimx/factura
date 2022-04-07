@@ -160,7 +160,7 @@ class HomePageState extends State<HomePageMap> {
 
   Future enviar() async {
 
-    
+
     String URLs =
         "https://www.halcontracking.com/php/factura/realizar.php?fact=$factura";
 
@@ -169,9 +169,34 @@ class HomePageState extends State<HomePageMap> {
 
     final jsonResponse = json.decode(response.body);
 
-    if (jsonResponse['Success'] == 1) { 
-
-    
+    if (jsonResponse['Success'] == 1) {     
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Atención"),
+            content: Text(jsonResponse),
+            actions: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.teal,
+                    fixedSize: Size.fromWidth(100),
+                    padding: EdgeInsets.all(10)),
+                child: Text("Cerrar"),
+                onPressed: () {
+                  setState(() {
+                    Factura = [];
+                    OtrosConcepts = [];
+                    cargado = false;
+                    NoFact = TextEditingController(text: "");
+                  });
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+    } else {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -198,6 +223,7 @@ class HomePageState extends State<HomePageMap> {
             ],
           );
         });
+
     }
   }
 
