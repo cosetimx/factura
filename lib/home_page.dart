@@ -149,6 +149,7 @@ class HomePageState extends State<HomePageMap> {
   List<OtrosConceptos> OtrosConcepts = [];
 
   bool _isLoading = false;
+  bool cargado = false;
   String factura = '';
   HttpClient client = new HttpClient();
 
@@ -159,17 +160,24 @@ class HomePageState extends State<HomePageMap> {
 
   Future enviar() async {
 
-    setState(() {
-      Factura = [];
-      OtrosConcepts = [];
-      NoFact = TextEditingController(text: "");
-    });
+    
+    String URLs =
+        "https://www.halcontracking.com/php/factura/realizar.php?fact=$factura";
+
+    print(URLs);
+    var response = await http.get(Uri.parse(URLs));
+
+    final jsonResponse = json.decode(response.body);
+
+    if (jsonResponse['Success'] == 1) { 
+
+    
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text("Atención"),
-            content: new Text("Información enviada Correctamente"),
+            title: Text("Atención"),
+            content: Text("Información enviada Correctamente"),
             actions: <Widget>[
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -178,16 +186,24 @@ class HomePageState extends State<HomePageMap> {
                     padding: EdgeInsets.all(10)),
                 child: Text("Cerrar"),
                 onPressed: () {
+                  setState(() {
+                    Factura = [];
+                    OtrosConcepts = [];
+                    cargado = false;
+                    NoFact = TextEditingController(text: "");
+                  });
                   Navigator.of(context).pop();
                 },
               )
             ],
           );
         });
+    }
   }
 
   Future _data(String factura) async {
     _isLoading = true;
+    cargado = false;
     Factura = [];
     OtrosConcepts = [];
 
@@ -207,6 +223,7 @@ class HomePageState extends State<HomePageMap> {
         var Datos = await jsonResponse['Result'][0]['Factura'][0];
 
         Consulta factura = new Consulta.fromJson(Datos);
+        cargado = true;
 
         setState(() {
           Factura.add(factura);
@@ -253,12 +270,12 @@ class HomePageState extends State<HomePageMap> {
                   title: Text(
                     "Atención",
                   ),
-                  content: new Text(
+                  content: Text(
                     "¿Deseas Ingresar esta Factura?",
                   ),
                   actions: <Widget>[
                     CupertinoDialogAction(
-                      child: new Text('SI'),
+                      child: Text('SI'),
                       onPressed: () {
                         Navigator.of(contexts).pop();
                         setState(() {
@@ -267,7 +284,7 @@ class HomePageState extends State<HomePageMap> {
                       },
                     ),
                     CupertinoDialogAction(
-                      child: new Text('NO'),
+                      child: Text('NO'),
                       onPressed: () async {
                         Navigator.of(contexts).pop();
                         setState(() {});
@@ -325,6 +342,7 @@ class HomePageState extends State<HomePageMap> {
                           setState(() {
                             Factura = [];
                             OtrosConcepts = [];
+                            cargado = false;
                             NoFact = TextEditingController(text: "");
                           });
                         },
@@ -353,14 +371,14 @@ class HomePageState extends State<HomePageMap> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              new Text(
+                              Text(
                                 'Descripción',
                                 style: TextStyle(
                                     color: Colors.teal[800],
                                     fontWeight: FontWeight.bold,
                                     fontSize: 10.0),
                               ),
-                              new Text(
+                              Text(
                                 '${OtrosConcepts[index].desc_otro}',
                                 style: TextStyle(
                                   color: Colors.black,
@@ -368,14 +386,14 @@ class HomePageState extends State<HomePageMap> {
                                   // fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              new Text(
+                              Text(
                                 'IVA',
                                 style: TextStyle(
                                     color: Colors.teal[800],
                                     fontWeight: FontWeight.bold,
                                     fontSize: 10.0),
                               ),
-                              new Text(
+                              Text(
                                 '${OtrosConcepts[index].monto_iva_otro}',
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 3,
@@ -386,14 +404,14 @@ class HomePageState extends State<HomePageMap> {
                                   // fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              new Text(
+                              Text(
                                 'Total',
                                 style: TextStyle(
                                     color: Colors.teal[800],
                                     fontWeight: FontWeight.bold,
                                     fontSize: 10.0),
                               ),
-                              new Text(
+                              Text(
                                 '${OtrosConcepts[index].total} ',
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 3,
@@ -412,7 +430,7 @@ class HomePageState extends State<HomePageMap> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            new Text(
+                            Text(
                               'Monto',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -420,7 +438,7 @@ class HomePageState extends State<HomePageMap> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 10.0),
                             ),
-                            new Text(
+                            Text(
                               '${OtrosConcepts[index].monto}',
                               style: TextStyle(
                                 fontSize: 12.0,
@@ -428,14 +446,14 @@ class HomePageState extends State<HomePageMap> {
                                 //  fontWeight: FontWeight.bold,
                               ),
                             ),
-                            new Text(
+                            Text(
                               'Retención',
                               style: TextStyle(
                                   color: Colors.teal[800],
                                   fontWeight: FontWeight.bold,
                                   fontSize: 10.0),
                             ),
-                            new Text(
+                            Text(
                               '${OtrosConcepts[index].monto_retencion}',
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
@@ -473,14 +491,14 @@ class HomePageState extends State<HomePageMap> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        new Text(
+                        Text(
                           'Guía',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].no_guia}',
                           style: TextStyle(
                             color: Colors.black,
@@ -488,7 +506,7 @@ class HomePageState extends State<HomePageMap> {
                             //  fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Fecha',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -496,7 +514,7 @@ class HomePageState extends State<HomePageMap> {
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].fecha}',
                           style: TextStyle(
                             fontSize: 12.0,
@@ -504,14 +522,14 @@ class HomePageState extends State<HomePageMap> {
                             // fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Cliente',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].cliente}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -522,14 +540,14 @@ class HomePageState extends State<HomePageMap> {
                             // fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Calle',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].calle}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -540,14 +558,14 @@ class HomePageState extends State<HomePageMap> {
                             // fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Colonia',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].colonia}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -558,14 +576,14 @@ class HomePageState extends State<HomePageMap> {
                             //  fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Localidad',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].localidad}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -576,14 +594,14 @@ class HomePageState extends State<HomePageMap> {
                             // fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Remitente',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].remitente}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -594,14 +612,14 @@ class HomePageState extends State<HomePageMap> {
                             //  fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Flete',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].flete}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -612,14 +630,14 @@ class HomePageState extends State<HomePageMap> {
                             // fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Otros',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].otros}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -630,14 +648,14 @@ class HomePageState extends State<HomePageMap> {
                             //  fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'IVA',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].iva}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -648,14 +666,14 @@ class HomePageState extends State<HomePageMap> {
                             // fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Moneda',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].moneda}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -673,14 +691,14 @@ class HomePageState extends State<HomePageMap> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        new Text(
+                        Text(
                           'Factura',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].factura}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -691,14 +709,14 @@ class HomePageState extends State<HomePageMap> {
                             //  fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'RFC',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].rfc}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -709,7 +727,7 @@ class HomePageState extends State<HomePageMap> {
                             //  fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Número',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -719,7 +737,7 @@ class HomePageState extends State<HomePageMap> {
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].numero}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -730,7 +748,7 @@ class HomePageState extends State<HomePageMap> {
                             // fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Municipio',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -740,7 +758,7 @@ class HomePageState extends State<HomePageMap> {
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].municipio}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -751,7 +769,7 @@ class HomePageState extends State<HomePageMap> {
                             //  fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Código Postal',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -761,7 +779,7 @@ class HomePageState extends State<HomePageMap> {
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].codigo_postal}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -772,7 +790,7 @@ class HomePageState extends State<HomePageMap> {
                             // fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Destinatario',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -782,7 +800,7 @@ class HomePageState extends State<HomePageMap> {
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].destinatario}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -793,7 +811,7 @@ class HomePageState extends State<HomePageMap> {
                             //  fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Autopistas',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -803,7 +821,7 @@ class HomePageState extends State<HomePageMap> {
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].autopistas}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -814,7 +832,7 @@ class HomePageState extends State<HomePageMap> {
                             //   fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'SubTotal',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -824,7 +842,7 @@ class HomePageState extends State<HomePageMap> {
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].subtotal}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -835,7 +853,7 @@ class HomePageState extends State<HomePageMap> {
                             //  fontWeight: FontWeight.bold,
                           ),
                         ),
-                        new Text(
+                        Text(
                           'Retención',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -845,7 +863,7 @@ class HomePageState extends State<HomePageMap> {
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        new Text(
+                        Text(
                           '${Factura[index].retencion}',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -863,19 +881,37 @@ class HomePageState extends State<HomePageMap> {
           );
         });
 
-    final body =
-        Column(children: [BotonConsulta, List, ListOtros, ]);
+    final body = Column(children: [
+      BotonConsulta,
+      List,
+      ListOtros,
+    ]);
 
-    return new Scaffold(
-      resizeToAvoidBottomInset: false,
-      persistentFooterButtons: [BotonEjecutar],
-      body: Stack(children: <Widget>[
-        _isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Stack(children: <Widget>[SingleChildScrollView(child: body)])
-      ]),
-    );
+    return cargado
+        ? Scaffold(
+            resizeToAvoidBottomInset: false,
+            persistentFooterButtons: [BotonEjecutar],
+            body: Stack(children: <Widget>[
+              _isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Stack(
+                      children: <Widget>[SingleChildScrollView(child: body)])
+            ]),
+          )
+        : Scaffold(
+            resizeToAvoidBottomInset: false,
+
+            // persistentFooterButtons: [BotonEjecutar],
+            body: Stack(children: <Widget>[
+              _isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Stack(
+                      children: <Widget>[SingleChildScrollView(child: body)])
+            ]),
+          );
   }
 }
