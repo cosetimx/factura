@@ -146,10 +146,17 @@ class LoginPageState extends State<LoginPageMap> {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return ShowDialogToDismiss(
-                        title: 'Atención',
-                        content: 'Nombre de usuario o contraseña incorrectos',
-                        buttonText: 'Cerrar',
+                      return CupertinoAlertDialog(
+                        title: Text('Atención'),
+                        content: Text('Nombre de usuario o contraseña incorrectos'),
+                        actions: <Widget>[
+                    CupertinoDialogAction(
+                      child: Text('Cerrar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        
+                      },
+                    ),]
                       );
                     },
                   );
@@ -158,10 +165,17 @@ class LoginPageState extends State<LoginPageMap> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return ShowDialogToDismiss(
-                      title: 'Atención',
-                      content: 'Error de Conexión $Exception',
-                      buttonText: 'Cerrar',
+                    return CupertinoAlertDialog(
+                      title: Text('Atención'),
+                      content: Text('Error de Conexión $Exception'),
+                      actions: <Widget>[
+                      CupertinoDialogAction(
+                      child: Text('Cerrar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        
+                      },
+                    ),]
                     );
                   },
                 );
