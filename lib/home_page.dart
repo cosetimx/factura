@@ -226,12 +226,20 @@ class HomePageState extends State<HomePageMap> {
 
     }
      } catch(e) {
+
+             var error = response.body.split("]");
+             String message = error[3];
+
 showDialog(
+
+
+      
+
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Atención"),
-            content: Text(response.body),
+            content: Text(message),
             actions: <Widget>[
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
