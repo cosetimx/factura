@@ -244,6 +244,92 @@ class HomePageState extends State<HomePageMap> {
           });
     }
   }
+ Future cancelar() async {
+    String factura = NoFact.text;
+    String URLs =
+        "https://www.halcontracking.com/php/factura/cancelar.php?fact=$factura";
+
+    print(URLs);
+    var response = await http.get(Uri.parse(URLs));
+    try {
+      var jsonResponse = json.decode(response.body);
+
+      if (jsonResponse['Success'] == 1) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CupertinoAlertDialog(
+                title: Text("Atención"),
+                content: Text("Informacion Enviada Correctamente"),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                 child: Text("Cerrar"),
+                    onPressed: () {
+                      setState(() {
+                        Factura = [];
+                        OtrosConcepts = [];
+                        cargado = false;
+                        NoFact = TextEditingController(text: "");
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CupertinoAlertDialog(
+                title: Text("Atención"),
+                content: Text("Sin Resultados"),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+
+                    child: Text("Cerrar"),
+                    onPressed: () {
+                      setState(() {
+                        Factura = [];
+                        OtrosConcepts = [];
+                        cargado = false;
+                        NoFact = TextEditingController(text: "");
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      }
+    } catch (e) {
+      var error = response.body.split("]");
+      String message = error[3];
+
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title: Text("Atención"),
+              content: Text(message),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text("Cerrar"),
+                  onPressed: () {
+                    setState(() {
+                      Factura = [];
+                      OtrosConcepts = [];
+                      cargado = false;
+                      NoFact = TextEditingController(text: "");
+                    });
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    }
+  }
 
   Future _data(String factura) async {
     _isLoading = true;
@@ -306,6 +392,47 @@ class HomePageState extends State<HomePageMap> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    final BotonCancelar = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          primary: Colors.teal,
+          fixedSize: Size.fromWidth(100),
+          padding: EdgeInsets.all(10)),
+      child: Icon(Icons.cancel),
+      onPressed: () async {
+        await showDialog(
+            context: context,
+            builder: (BuildContext contexts) {
+              return CupertinoAlertDialog(
+                  title: Text(
+                    "Atención",
+                  ),
+                  content: Text(
+                    "¿Deseas Cancelar esta Factura?",
+                  ),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      child: Text('SI'),
+                      onPressed: () {
+                        Navigator.of(contexts).pop();
+                        setState(() {
+                          enviar();
+                        });
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: Text('NO'),
+                      onPressed: () async {
+                        Navigator.of(contexts).pop();
+                        setState(() {});
+                      },
+                    ),
+                  ]);
+            });
+      },
+    );
+
     final BotonEjecutar = ElevatedButton(
       style: ElevatedButton.styleFrom(
           primary: Colors.teal,
@@ -940,7 +1067,7 @@ class HomePageState extends State<HomePageMap> {
     return cargado
         ? Scaffold(
             resizeToAvoidBottomInset: false,
-            persistentFooterButtons: [BotonEjecutar],
+            persistentFooterButtons: [BotonEjecutar, BotonCancelar],
             body: Stack(children: <Widget>[
               _isLoading
                   ? Center(
