@@ -1067,7 +1067,7 @@ class HomePageState extends State<HomePageMap> {
     return cargado
         ? Scaffold(
             resizeToAvoidBottomInset: false,
-            persistentFooterButtons: [BotonEjecutar, BotonCancelar],
+            persistentFooterButtons: [BotonEjecutar, /*BotonCancelar*/],
             body: Stack(children: <Widget>[
               _isLoading
                   ? Center(
