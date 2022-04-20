@@ -399,7 +399,7 @@ class HomePageState extends State<HomePageMap> {
           primary: Colors.teal,
           fixedSize: Size.fromWidth(100),
           padding: EdgeInsets.all(10)),
-      child: Icon(Icons.cancel),
+      child: Text('Cancelar'),//Icon(Icons.cancel),
       onPressed: () async {
         await showDialog(
             context: context,
@@ -438,7 +438,7 @@ class HomePageState extends State<HomePageMap> {
           primary: Colors.teal,
           fixedSize: Size.fromWidth(100),
           padding: EdgeInsets.all(10)),
-      child: Icon(Icons.check),
+      child: Text('Aceptar'),//Icon(Icons.check),
       onPressed: () async {
         await showDialog(
             context: context,
@@ -485,13 +485,13 @@ class HomePageState extends State<HomePageMap> {
                 padding: EdgeInsets.all(8.0),
                 child: ListTile(
                     leading: Icon(Icons.assignment),
-                    title: Text("Factura a Buscar"),
+                    title: Text("Carta Porte a Buscar"),
                     subtitle: TextField(
                       controller: NoFact,
                       keyboardType: TextInputType
                           .text, //numberWithOptions(decimal: true),
                       decoration: InputDecoration(
-                        hintText: 'No. de Factura',
+                        hintText: 'No. de Carta Porte',
                         contentPadding:
                             EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                         filled: true,
@@ -869,7 +869,7 @@ class HomePageState extends State<HomePageMap> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Factura',
+                          'Carta Porte',
                           style: TextStyle(
                               color: Colors.teal[800],
                               fontWeight: FontWeight.bold,
