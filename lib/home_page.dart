@@ -177,7 +177,7 @@ class HomePageState extends State<HomePageMap> {
                 content: Text("Informacion Enviada Correctamente"),
                 actions: <Widget>[
                   CupertinoDialogAction(
-                 child: Text("Cerrar"),
+                    child: Text("Cerrar"),
                     onPressed: () {
                       setState(() {
                         Factura = [];
@@ -200,7 +200,6 @@ class HomePageState extends State<HomePageMap> {
                 content: Text("Sin Resultados"),
                 actions: <Widget>[
                   CupertinoDialogAction(
-
                     child: Text("Cerrar"),
                     onPressed: () {
                       setState(() {
@@ -244,7 +243,8 @@ class HomePageState extends State<HomePageMap> {
           });
     }
   }
- Future cancelar() async {
+
+  Future cancelar() async {
     String factura = NoFact.text;
     String URLs =
         "https://www.halcontracking.com/php/factura/cancelar.php?fact=$factura";
@@ -263,7 +263,7 @@ class HomePageState extends State<HomePageMap> {
                 content: Text("Informacion Enviada Correctamente"),
                 actions: <Widget>[
                   CupertinoDialogAction(
-                 child: Text("Cerrar"),
+                    child: Text("Cerrar"),
                     onPressed: () {
                       setState(() {
                         Factura = [];
@@ -286,7 +286,6 @@ class HomePageState extends State<HomePageMap> {
                 content: Text("Sin Resultados"),
                 actions: <Widget>[
                   CupertinoDialogAction(
-
                     child: Text("Cerrar"),
                     onPressed: () {
                       setState(() {
@@ -344,6 +343,7 @@ class HomePageState extends State<HomePageMap> {
     var response = await http.get(Uri.parse(URLs));
 
     final jsonResponse = json.decode(response.body);
+    if ( response.statusCode == 200 ){
     try {
       List Szs = jsonResponse['Result'][1]['Otros'];
 
@@ -368,22 +368,39 @@ class HomePageState extends State<HomePageMap> {
       }
     } catch (e) {
       print('Error $e');
-            showDialog(
+      showDialog(
           context: context,
           builder: (BuildContext context) {
-            return 
-      CupertinoAlertDialog(
-          title: Text('Atención'),
-          content: Text('Factura no encontrada'),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text('NO'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                setState(() {});
-              },
-            ),
-          ]);  });
+            return CupertinoAlertDialog(
+                title: Text('Atención'),
+                content: Text('Factura no encontrada'),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    child: Text('NO'),
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      setState(() {});
+                    },
+                  ),
+                ]);
+          });
+    }} else {
+       showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+                title: Text('Atención'),
+                content: Text('Error de Conexion'),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    child: Text('NO'),
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      setState(() {});
+                    },
+                  ),
+                ]);
+          });
     }
     setState(() {
       _isLoading = false;
@@ -392,14 +409,12 @@ class HomePageState extends State<HomePageMap> {
 
   @override
   Widget build(BuildContext context) {
-
-
     final BotonCancelar = ElevatedButton(
       style: ElevatedButton.styleFrom(
           primary: Colors.teal,
           fixedSize: Size.fromWidth(100),
           padding: EdgeInsets.all(10)),
-      child: Text('Cancelar'),//Icon(Icons.cancel),
+      child: Text('Cancelar'), //Icon(Icons.cancel),
       onPressed: () async {
         await showDialog(
             context: context,
@@ -438,7 +453,7 @@ class HomePageState extends State<HomePageMap> {
           primary: Colors.teal,
           fixedSize: Size.fromWidth(100),
           padding: EdgeInsets.all(10)),
-      child: Text('Aceptar'),//Icon(Icons.check),
+      child: Text('Aceptar'), //Icon(Icons.check),
       onPressed: () async {
         await showDialog(
             context: context,
@@ -497,6 +512,9 @@ class HomePageState extends State<HomePageMap> {
                         filled: true,
                         fillColor: Colors.white,
                       ),
+                      onChanged: (value) {
+                        NoFact = TextEditingController(text: value);
+                      },
                     ),
                     trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                       IconButton(
@@ -1067,7 +1085,9 @@ class HomePageState extends State<HomePageMap> {
     return cargado
         ? Scaffold(
             resizeToAvoidBottomInset: false,
-            persistentFooterButtons: [BotonEjecutar, /*BotonCancelar*/],
+            persistentFooterButtons: [
+              BotonEjecutar, /*BotonCancelar*/
+            ],
             body: Stack(children: <Widget>[
               _isLoading
                   ? Center(
