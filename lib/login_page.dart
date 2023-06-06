@@ -201,7 +201,7 @@ class LoginPageState extends State<LoginPageMap> {
         control,
         // Version
         Text(
-          'V 1.10.10',
+          'V 1.10.20',
           style: TextStyle(fontSize: 8.0, color: Colors.teal),
         ),
         user,

@@ -70,7 +70,7 @@ class Consulta {
 
   factory Consulta.fromJson(Map<String, dynamic> parsedJson) {
     return Consulta(
-        no_guia: parsedJson['no_guia'],
+        no_guia: parsedJson['no_guia'].toString(),
         factura: parsedJson['factura'],
         cliente: parsedJson['cliente'],
         rfc: parsedJson['rfc'],
@@ -79,7 +79,7 @@ class Consulta {
         colonia: parsedJson['colonia'],
         municipio: parsedJson['municipio'],
         localidad: parsedJson['localidad'],
-        codigo_postal: parsedJson['codigo_postal'],
+        codigo_postal: parsedJson['codigo_postal'].toString(),
         remitente: parsedJson['remitente'],
         destinatario: parsedJson['destinatario'],
         flete: parsedJson['Flete'],
@@ -344,7 +344,7 @@ class HomePageState extends State<HomePageMap> {
 
     final jsonResponse = json.decode(response.body);
     if ( response.statusCode == 200 ){
-    try {
+   try {
       List Szs = jsonResponse['Result'][1]['Otros'];
 
       int Sizes = Szs.length;
@@ -366,25 +366,28 @@ class HomePageState extends State<HomePageMap> {
           });
         }
       }
-    } catch (e) {
+     } catch (e) {
       print('Error $e');
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return CupertinoAlertDialog(
                 title: Text('Atención'),
-                content: Text('Factura no encontrada'),
+                content: Text('Error $e'),
                 actions: <Widget>[
                   CupertinoDialogAction(
                     child: Text('NO'),
                     onPressed: () async {
                       Navigator.of(context).pop();
                       setState(() {});
-                    },
+                    }, 
                   ),
-                ]);
+                ]); 
           });
-    }} else {
+    } 
+     
+    
+    } else {
        showDialog(
           context: context,
           builder: (BuildContext context) {
