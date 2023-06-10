@@ -627,7 +627,6 @@ class HomePageState extends State<HomePageMap> {
       },
     );
 
-
     final BotonRegresar = ElevatedButton(
       style: ElevatedButton.styleFrom(
           primary: Colors.teal,
@@ -898,7 +897,6 @@ class HomePageState extends State<HomePageMap> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            
                             Text(
                               'Estatus   $_Estatus',
                               style: TextStyle(
@@ -1320,10 +1318,49 @@ class HomePageState extends State<HomePageMap> {
         ? Scaffold(
             resizeToAvoidBottomInset: false,
             persistentFooterButtons: [
-              pendiente ? BotonEjecutar :
-             timbrada ? BotonCancelar  :
-             regresar ? BotonRegresar : SizedBox()
+              pendiente
+                  ? BotonEjecutar
+                  : timbrada
+                      ? BotonCancelar
+                      : regresar
+                          ? BotonRegresar
+                          : SizedBox()
             ],
+            drawer: Drawer(
+              // Add a ListView to the drawer. This ensures the user can scroll
+              // through the options in the drawer if there isn't enough vertical
+              // space to fit everything.
+              child: ListView(
+                // Important: Remove any padding from the ListView.
+                padding: EdgeInsets.zero,
+                children: [
+                  const DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                    ),
+                    child: Text('Menu'),
+                  ),
+                  ListTile(
+                    title: const Text('Buscador'),
+                    onTap: () {
+                      // Update the state of the app
+                      // ...
+                      // Then close the drawer
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Item 2'),
+                    onTap: () {
+                      // Update the state of the app
+                      // ...
+                      // Then close the drawer
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
             body: Stack(children: <Widget>[
               _isLoading
                   ? Center(

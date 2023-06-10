@@ -71,7 +71,9 @@ class LoginPageState extends State<LoginPageMap> {
       child: Text(
         'REVISIÓN DE FACTURAS',
         style: TextStyle(
-            fontSize: 18.0, color: Colors.teal[800], fontStyle: FontStyle.normal),
+            fontSize: 18.0,
+            color: Colors.teal[800],
+            fontStyle: FontStyle.normal),
         textAlign: TextAlign.center,
       ),
     );
@@ -136,7 +138,7 @@ class LoginPageState extends State<LoginPageMap> {
                   globals.NOMBRE = data['result'][0]['nombre'];
                   globals.TIPO = data['result'][0]['tipo'];
                   globals.USERLIS = data['result'][0]['usuariolis'];
-                     Navigator.pushNamed(context, HomePage.tag);
+                  Navigator.pushNamed(context, HomePage.tag);
                   _loading = false;
                 } else {
                   setState(() {
@@ -147,17 +149,17 @@ class LoginPageState extends State<LoginPageMap> {
                     context: context,
                     builder: (BuildContext context) {
                       return CupertinoAlertDialog(
-                        title: Text('Atención'),
-                        content: Text('Nombre de usuario o contraseña incorrectos'),
-                        actions: <Widget>[
-                    CupertinoDialogAction(
-                      child: Text('Cerrar'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        
-                      },
-                    ),]
-                      );
+                          title: Text('Atención'),
+                          content: Text(
+                              'Nombre de usuario o contraseña incorrectos'),
+                          actions: <Widget>[
+                            CupertinoDialogAction(
+                              child: Text('Cerrar'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ]);
                     },
                   );
                 }
@@ -166,17 +168,16 @@ class LoginPageState extends State<LoginPageMap> {
                   context: context,
                   builder: (BuildContext context) {
                     return CupertinoAlertDialog(
-                      title: Text('Atención'),
-                      content: Text('Error de Conexión $Exception'),
-                      actions: <Widget>[
-                      CupertinoDialogAction(
-                      child: Text('Cerrar'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        
-                      },
-                    ),]
-                    );
+                        title: Text('Atención'),
+                        content: Text('Error de Conexión $Exception'),
+                        actions: <Widget>[
+                          CupertinoDialogAction(
+                            child: Text('Cerrar'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ]);
                   },
                 );
               }
@@ -196,12 +197,12 @@ class LoginPageState extends State<LoginPageMap> {
       // padding: EdgeInsets.only(left: 4.0, right: 4.0),
       children: <Widget>[
         SizedBox(height: 40.0),
-            
+
         logo,
         control,
         // Version
         Text(
-          'V 1.10.40',
+          'V 1.10.50',
           style: TextStyle(fontSize: 8.0, color: Colors.teal),
         ),
         user,
@@ -250,26 +251,24 @@ class ShowDialogToDismiss extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-      return CupertinoAlertDialog(
-          title: Text(
-            title,
-          ),
-          content: new Text(
-            this.content,
-          ),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              child: new Text(
-                buttonText[0].toUpperCase() +
-                    buttonText.substring(1).toLowerCase(),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ]);
-
-}
+    return CupertinoAlertDialog(
+        title: Text(
+          title,
+        ),
+        content: new Text(
+          this.content,
+        ),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            child: new Text(
+              buttonText[0].toUpperCase() +
+                  buttonText.substring(1).toLowerCase(),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ]);
+  }
 }

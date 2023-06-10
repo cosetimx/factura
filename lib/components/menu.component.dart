@@ -1,3 +1,4 @@
+import 'package:factura/buscador.dart';
 import 'package:factura/home_page.dart';
 
 import 'package:flutter/material.dart';
@@ -6,10 +7,10 @@ import '../main.dart';
 import '../home_page.dart';
 
 final List<MenuItem> menuItems = <MenuItem>[
- // MenuItem('Carga', ListTicketPage(), FlutterIcons.gas_station_mco),
- // MenuItem('Descarga', DescargaPage(), MaterialCommunityIcons.fuel),
- // MenuItem('Volumen', DiarioPage(), FontAwesome5Solid.calendar_day),
- // MenuItem('Precios', PrecioPage(), FlutterIcons.fuel_mco),
+  MenuItem('Buscador', CunsultaView(), Icons.search),
+  // MenuItem('Descarga', DescargaPage(), MaterialCommunityIcons.fuel),
+  // MenuItem('Volumen', DiarioPage(), FontAwesome5Solid.calendar_day),
+  // MenuItem('Precios', PrecioPage(), FlutterIcons.fuel_mco),
 
   MenuItem('Cerrar Sesión', MyApp(), Icons.logout),
 ];
@@ -22,12 +23,10 @@ class XmobeMenu extends StatelessWidget {
       new UserAccountsDrawerHeader(
         accountEmail: null,
         accountName: new Text("Bienvenido \n\r ${globals.NOMBRE}"),
-         currentAccountPicture:
-        ClipOval(
-          child: Image.asset(
-              'assets/logo.png',
-              fit: BoxFit.fill),
-        ),  ), 
+        currentAccountPicture: ClipOval(
+          child: Image.asset('assets/logo.png', fit: BoxFit.fill),
+        ),
+      ),
       new ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
@@ -55,8 +54,14 @@ class MenuItemWidget extends StatelessWidget {
 
   Widget _buildMenu(MenuItem menuItem, context) {
     return ListTile(
-      leading: Icon(menuItem.icon, color: Colors.teal,),
-      title: Text(menuItem.title, style: TextStyle(color: Colors.teal),),
+      leading: Icon(
+        menuItem.icon,
+        color: Colors.teal,
+      ),
+      title: Text(
+        menuItem.title,
+        style: TextStyle(color: Colors.teal),
+      ),
       onTap: () {
         Navigator.of(context).push(
           new MaterialPageRoute(
