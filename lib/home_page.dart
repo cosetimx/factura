@@ -501,7 +501,7 @@ class HomePageState extends State<HomePageMap> {
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
                   title: Text('Atención'),
-                  content: Text('Error $e'),
+                  content: Text('Error Folio no Encontrado o mal capturado, Favor de Verificar '),
                   actions: <Widget>[
                     CupertinoDialogAction(
                       child: Text('NO'),

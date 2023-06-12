@@ -6,4 +6,4 @@ String NOMBRE ="";
 String TIPO = "";
 String USERLIS = "";
 
-// Version 1.10.40 Precio en Vales
+// Version 1.10.60 Precio en Vales

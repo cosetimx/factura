@@ -51,7 +51,7 @@ class CunsultaView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Consulta',
+        title: Text('Buscador',
             style: TextStyle(
               color: Colors.white,
             )),
@@ -79,6 +79,7 @@ class CunsultaState extends State<CunsultaMap> {
   HttpClient client = new HttpClient();
   String descripcion = '';
   String _Estatus = '';
+  var Logs = [];
   @override
   void initState() {
     super.initState();
@@ -94,19 +95,25 @@ class CunsultaState extends State<CunsultaMap> {
     print(URLs);
     var response = await http.get(Uri.parse(URLs));
 
-    Map jsonResponse = json.decode(response.body);
+    var jsonResponse = json.decode(response.body);
 
     print("Resultados $jsonResponse");
     if (response.statusCode == 200) {
       //   try {
       if (jsonResponse['success'] == 1) {
-        Map<String, dynamic> datos = await jsonResponse['Result'];
+        var datos = await jsonResponse['Result'];
+
+        print('Datos $datos');
 
         Consulta factura = Consulta(
-            accion: jsonResponse['Result'][0]['accion'],
-            log: jsonResponse['Result'][0]['log'],
-            no_guia: jsonResponse['Result'][0]['no_guia'],
-            status: jsonResponse['Result'][0]['status']);
+            accion: datos[0]['accion'],
+            log: datos[0]['log'],
+            no_guia: datos[0]['num_guia'],
+            status: datos[0]['status']);
+
+        if (datos[0]['log'] != '') {
+          Logs = datos[0]['log'].toString().split('|');
+        }
 
         setState(() {
           Factura.add(factura);
@@ -137,7 +144,7 @@ class CunsultaState extends State<CunsultaMap> {
           builder: (BuildContext context) {
             return CupertinoAlertDialog(
                 title: Text('Atención'),
-                content: Text('Error de Conexion'),
+                content: Text('Error Folio no Encontrado o mal capturado, Favor de Verificar'),
                 actions: <Widget>[
                   CupertinoDialogAction(
                     child: Text('NO'),
@@ -229,85 +236,79 @@ class CunsultaState extends State<CunsultaMap> {
                 child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: SingleChildScrollView(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Guía',
-                                  style: TextStyle(
-                                      color: Colors.teal[800],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.0),
-                                ),
-                                Text(
-                                  '${Factura[index].no_guia}',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12.0,
-                                    //  fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'Estatus',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.teal[800],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.0),
-                                ),
-                                Text(
-                                  '${Factura[index].status}',
-                                  style: TextStyle(
-                                    fontSize: 12.0,
-                                    color: Colors.black,
-                                    // fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'Accion',
-                                  style: TextStyle(
-                                      color: Colors.teal[800],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.0),
-                                ),
-                                Text(
-                                  '${Factura[index].accion}',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                  softWrap: false,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12.0,
-                                    // fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'Log',
-                                  style: TextStyle(
-                                      color: Colors.teal[800],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.0),
-                                ),
-                                Text(
-                                  '${Factura[index].log}',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                  softWrap: false,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12.0,
-                                    // fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ]),
-                    ))),
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Guía',
+                          style: TextStyle(
+                              color: Colors.teal[800],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10.0),
+                        ),
+                        Text(
+                          '${Factura[index].no_guia}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.0,
+                            //  fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Estatus',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.teal[800],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10.0),
+                        ),
+                        Text(
+                          '${Factura[index].status}',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Accion',
+                          style: TextStyle(
+                              color: Colors.teal[800],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10.0),
+                        ),
+                        Text(
+                          '${Factura[index].accion}',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          softWrap: false,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.0,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Mensaje',
+                          style: TextStyle(
+                              color: Colors.teal[800],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10.0),
+                        ),
+                        Text(
+                          '${Logs[2]}',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 10,
+                          softWrap: false,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.0,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    )))),
           );
         });
 

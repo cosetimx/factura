@@ -7,6 +7,8 @@ import '../main.dart';
 import '../home_page.dart';
 
 final List<MenuItem> menuItems = <MenuItem>[
+  MenuItem('Carta Porte', HomePage(), Icons.home),
+
   MenuItem('Buscador', CunsultaView(), Icons.search),
   // MenuItem('Descarga', DescargaPage(), MaterialCommunityIcons.fuel),
   // MenuItem('Volumen', DiarioPage(), FontAwesome5Solid.calendar_day),
