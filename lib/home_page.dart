@@ -167,6 +167,7 @@ class HomePageState extends State<HomePageMap> {
   HttpClient client = new HttpClient();
   String descripcion = '';
   String _Estatus = '';
+
   @override
   void initState() {
     super.initState();
@@ -188,7 +189,7 @@ class HomePageState extends State<HomePageMap> {
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
                 title: Text("Atención"),
-                content: Text("Informacion Enviada Correctamente"),
+                content: Text("Enviada a Timbrar con Éxito"),
                 actions: <Widget>[
                   CupertinoDialogAction(
                     child: Text("Cerrar"),
@@ -211,7 +212,7 @@ class HomePageState extends State<HomePageMap> {
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
                 title: Text("Atención"),
-                content: Text("Sin Resultados"),
+                content: Text("No se pudo Enviar"),
                 actions: <Widget>[
                   CupertinoDialogAction(
                     child: Text("Cerrar"),
@@ -256,6 +257,12 @@ class HomePageState extends State<HomePageMap> {
             );
           });
     }
+    setState(() {
+      pendiente = false;
+      timbrada = false;
+      cancelada = false;
+      regresar = false;
+    });
   }
 
   Future cancelar() async {
@@ -277,7 +284,7 @@ class HomePageState extends State<HomePageMap> {
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
                 title: Text("Atención"),
-                content: Text("Informacion Enviada Correctamente"),
+                content: Text("Enviada a cancelar con con Éxito"),
                 actions: <Widget>[
                   CupertinoDialogAction(
                     child: Text("Cerrar"),
@@ -300,7 +307,7 @@ class HomePageState extends State<HomePageMap> {
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
                 title: Text("Atención"),
-                content: Text("Sin Resultados"),
+                content: Text("No se pudo Enviar"),
                 actions: <Widget>[
                   CupertinoDialogAction(
                     child: Text("Cerrar"),
@@ -345,6 +352,12 @@ class HomePageState extends State<HomePageMap> {
             );
           });
     }
+    setState(() {
+      pendiente = false;
+      timbrada = false;
+      cancelada = false;
+      regresar = false;
+    });
   }
 
   Future<void> _regresar() async {
@@ -389,7 +402,7 @@ class HomePageState extends State<HomePageMap> {
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
                 title: Text("Atención"),
-                content: Text("Sin Resultados"),
+                content: Text("No se pudo Enviar"),
                 actions: <Widget>[
                   CupertinoDialogAction(
                     child: Text("Cerrar"),
@@ -434,6 +447,12 @@ class HomePageState extends State<HomePageMap> {
             );
           });
     }
+    setState(() {
+      pendiente = false;
+      timbrada = false;
+      cancelada = false;
+      regresar = false;
+    });
   }
 
   Future _data(String factura) async {
@@ -501,7 +520,8 @@ class HomePageState extends State<HomePageMap> {
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
                   title: Text('Atención'),
-                  content: Text('Error Folio no Encontrado o mal capturado, Favor de Verificar '),
+                  content: Text(
+                      'Error Folio no Encontrado o mal capturado, Favor de Verificar '),
                   actions: <Widget>[
                     CupertinoDialogAction(
                       child: Text('NO'),
@@ -560,10 +580,10 @@ class HomePageState extends State<HomePageMap> {
                       CupertinoDialogAction(
                         child: Text('SI'),
                         onPressed: () {
-                          Navigator.of(contexts).pop();
                           setState(() {
                             cancelar();
                           });
+                          Navigator.of(contexts).pop();
                         },
                       ),
                       CupertinoDialogAction(
@@ -609,10 +629,10 @@ class HomePageState extends State<HomePageMap> {
                     CupertinoDialogAction(
                       child: Text('SI'),
                       onPressed: () {
-                        Navigator.of(contexts).pop();
                         setState(() {
                           enviar();
                         });
+                        Navigator.of(contexts).pop();
                       },
                     ),
                     CupertinoDialogAction(
@@ -642,16 +662,16 @@ class HomePageState extends State<HomePageMap> {
                     "Atención",
                   ),
                   content: Text(
-                    "¿Deseas Ingresar esta Factura?",
+                    "¿Deseas Regresar esta Factura?",
                   ),
                   actions: <Widget>[
                     CupertinoDialogAction(
                       child: Text('SI'),
                       onPressed: () {
-                        Navigator.of(contexts).pop();
                         setState(() {
                           _regresar();
                         });
+                        Navigator.of(contexts).pop();
                       },
                     ),
                     CupertinoDialogAction(
@@ -716,6 +736,7 @@ class HomePageState extends State<HomePageMap> {
                           setState(() {
                             Factura = [];
                             OtrosConcepts = [];
+
                             cargado = false;
                             timbrada = false;
                             NoFact = TextEditingController(text: "");
