@@ -1,5 +1,6 @@
 import 'package:factura/buscador.dart';
 import 'package:factura/home_page.dart';
+import 'package:factura/informacion.dart';
 
 import 'package:flutter/material.dart';
 import '../Globals.dart' as globals;
@@ -10,7 +11,7 @@ final List<MenuItem> menuItems = <MenuItem>[
   MenuItem('Carta Porte', HomePage(), Icons.home),
 
   MenuItem('Buscador', CunsultaView(), Icons.search),
-  // MenuItem('Descarga', DescargaPage(), MaterialCommunityIcons.fuel),
+  MenuItem('Facturas', InfoPage(), Icons.search),
   // MenuItem('Volumen', DiarioPage(), FontAwesome5Solid.calendar_day),
   // MenuItem('Precios', PrecioPage(), FlutterIcons.fuel_mco),
 

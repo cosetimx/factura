@@ -18,7 +18,11 @@ import 'package:http/http.dart' as http;
 class Documentos {
   String Tipo, Ruta, Descripcion, Documento;
 
-  Documentos({required this.Tipo, required this.Ruta, required this.Descripcion, required this.Documento});
+  Documentos(
+      {required this.Tipo,
+      required this.Ruta,
+      required this.Descripcion,
+      required this.Documento});
 }
 
 class InfoPage extends StatelessWidget {
@@ -51,17 +55,11 @@ class InfoPageState extends State<InfoPageMap> {
   List<Documentos> Remolque = [];
 
   Future getList() async {
-    //Docs = [];
+    Docs = [];
 
-    Operador = [];
-
-    Pedido = [];
-    Unidad = [];
-    Remolque = [];
     // TODO Conectar con el api php para obtener la lista de documentos
     _isLoading = false;
 
-   
     //  print('No Emp $noemp');
     try {
       String URL =
@@ -75,33 +73,13 @@ class InfoPageState extends State<InfoPageMap> {
         print("Data ${data.length}");
         if (data.length != 0) {
           for (int i = 0; i < data.length; i++) {
-            Documentos docs = Documentos(Tipo: '', Descripcion: '', Documento: '', Ruta: '');
+            Documentos docs =
+                Documentos(Tipo: '', Descripcion: '', Documento: '', Ruta: '');
             docs.Tipo = data[i]['Tipo'];
             String descripcion = data[i]['Descripcion'];
             docs.Descripcion = descripcion.replaceAll('_', ' ');
             docs.Ruta = data[i]['Ruta'];
             docs.Documento = data[i]['Documento'];
-            if (docs.Documento.contains('Operador')) {
-              setState(() {
-                Operador.add(docs);
-                _isLoading = true;
-              });
-            } else if (docs.Documento.contains('Unidad')) {
-              setState(() {
-                Unidad.add(docs);
-                _isLoading = true;
-              });
-            } else if (docs.Documento.contains('Remolque')) {
-              setState(() {
-                Remolque.add(docs);
-                _isLoading = true;
-              });
-            } else if (docs.Documento.contains('Pedido')) {
-              setState(() {
-                Pedido.add(docs);
-                _isLoading = true;
-              });
-            }
             setState(() {
               Docs.add(docs);
               _isLoading = true;
@@ -220,60 +198,62 @@ class InfoPageState extends State<InfoPageMap> {
                 color: Colors.grey[200], //indigo[800],
                 child: ListTile(
                   onTap: () {
-                    if (item.Tipo.contains('Imagen')) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return Scaffold(
-                              appBar: AppBar(
-                                title: Text(item.Descripcion,
-                                    style: TextStyle(color: Colors.blueGrey)),
-                                actions: <Widget>[
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.share,
-                                      color: Colors.blueGrey,
-                                    ),
-                                    onPressed: () {
-                                      shareImg(item.Ruta, item.Descripcion);
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.qr_code,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) {
-                                        return QrCodeX(item.Ruta);
-                                      }));
-                                    },
-                                  ),
-                                ],
-                              ),
-                              body: Container(
-                                color: Colors.blueGrey,
-                                child: Image.network(item.Ruta),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    } else {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return FullPdfViewerScreen(item.Ruta, item.Descripcion);
-                      }));
-                    }
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return FullPdfViewerScreen(item.Ruta, item.Descripcion);
+                    }));
                   },
                   leading: SizedBox(
                     height: 94,
                     width: 64,
-                    child: item.Tipo.contains('Imagen')
-                        ? Icon(Icons.image)
-                        : Icon(Icons.picture_as_pdf),
+                    child: Icon(Icons.picture_as_pdf),
+                  ),
+                  title: Text(
+                    '${index + 1} .- ${item.Descripcion}',
+                    style: new TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.blueGrey,
+                  ),
+                ),
+              );
+            },
+          ),
+          //    )
+        ));
+
+    final body1 = Card(
+        elevation: 18.0,
+        color: Colors.grey[200], //indigo[800],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          //width: 100.0,
+          height: (MediaQuery.of(context).size.height) - 20,
+          child:
+              ListView.builder(
+            itemCount: Docs.length,
+            itemBuilder: (context, index) {
+              final item = Docs[index];
+              return Card(
+                color: Colors.grey[200], //indigo[800],
+                child: ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return FullPdfViewerScreen(item.Ruta, item.Descripcion);
+                    }));
+                  },
+                  leading: SizedBox(
+                    height: 94,
+                    width: 64,
+                    child: Icon(Icons.picture_as_pdf),
                   ),
                   title: Text(
                     '${index + 1} .- ${item.Descripcion}',
@@ -314,10 +294,7 @@ class InfoPageState extends State<InfoPageMap> {
                                 Tab(
                                     icon: Icon(Icons.fire_truck),
                                     text: 'Unidad'),
-                                Tab(
-                                    icon: Icon(
-                                      Icons.abc),
-                                    text: 'Remolque'),
+                                Tab(icon: Icon(Icons.abc), text: 'Remolque'),
                                 Tab(
                                     icon: Icon(Icons.assignment_outlined),
                                     text: 'Pedido'),
@@ -425,7 +402,6 @@ class InfoPageState extends State<InfoPageMap> {
                             ),
                             //    )
                           )),
-                    
                       Card(
                           elevation: 18.0,
                           color: Colors.grey[200], //indigo[800],
@@ -652,7 +628,7 @@ class InfoPageState extends State<InfoPageMap> {
           ],
         ),
         body: _isLoading
-            ? Center(child: body) //listaf
+            ? Center(child: body1) //listaf
             : Center(
                 child: CircularProgressIndicator(
                 color: Colors.blueGrey,
@@ -725,7 +701,6 @@ class FullPdfViewerScreen extends StatelessWidget {
           minScale: 1.0,
         ),
       ),
-    
     );
   }
 }
