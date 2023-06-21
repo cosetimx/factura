@@ -47,12 +47,12 @@ class InfoPageMap extends StatefulWidget {
 }
 
 class InfoPageState extends State<InfoPageMap> {
+    TextEditingController controller = new TextEditingController();
+  ScrollController _rrectController = ScrollController();
+
   bool _isLoading = true;
   List<Documentos> Docs = [];
-  List<Documentos> Operador = [];
-  List<Documentos> Pedido = [];
-  List<Documentos> Unidad = [];
-  List<Documentos> Remolque = [];
+
 
   Future getList() async {
     Docs = [];
@@ -226,28 +226,45 @@ class InfoPageState extends State<InfoPageMap> {
           //    )
         ));
 
-    final body1 = Card(
-        elevation: 18.0,
-        color: Colors.grey[200], //indigo[800],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24.0),
+    final body1 = new Column(children: <Widget>[
+       Container(
+        color: Theme.of(context).primaryColor,
+        child: Card(
+          child: new ListTile(
+            leading: new Icon(Icons.search),
+            title: new TextField(
+              controller: controller,
+              decoration: new InputDecoration(
+                  hintText: 'Buscar', border: InputBorder.none),
+              onChanged: onSearchTextChanged,
+            ),
+            trailing: new IconButton(
+              icon: new Icon(
+                Icons.cancel,
+                color: Colors.teal,
+              ),
+              onPressed: () {
+                controller.clear();
+                onSearchTextChanged('');
+              },
+            ),
+          ),
         ),
-        clipBehavior: Clip.antiAlias,
-        child: Container(
-          //width: 100.0,
-          height: (MediaQuery.of(context).size.height) - 20,
-          child:
-              ListView.builder(
-            itemCount: Docs.length,
-            itemBuilder: (context, index) {
-              final item = Docs[index];
-              return Card(
-                color: Colors.grey[200], //indigo[800],
-                child: ListTile(
+      ),
+       Expanded(
+          child: _searchResult.length != 0 || controller.text.isNotEmpty
+              ? Scrollbar(
+                  controller: _rrectController,
+                  // isAlwaysShown: true,
+                  child: ListView.builder(
+                    itemCount: _searchResult.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      //final item = usuarios[index];
+                      return Column(children: <Widget>[ ListTile(
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return FullPdfViewerScreen(item.Ruta, item.Descripcion);
+                      return FullPdfViewerScreen(_searchResult[index].Ruta, _searchResult[index].Descripcion);
                     }));
                   },
                   leading: SizedBox(
@@ -256,7 +273,7 @@ class InfoPageState extends State<InfoPageMap> {
                     child: Icon(Icons.picture_as_pdf),
                   ),
                   title: Text(
-                    '${index + 1} .- ${item.Descripcion}',
+                    '${index + 1} .- ${_searchResult[index].Descripcion}',
                     style: new TextStyle(
                         color: Colors.blueGrey,
                         fontSize: 14.0,
@@ -266,351 +283,52 @@ class InfoPageState extends State<InfoPageMap> {
                     Icons.arrow_forward_ios,
                     color: Colors.blueGrey,
                   ),
-                ),
+                ),]
               );
             },
           ),
           //    )
-        ));
+        )
+        :
+        Scrollbar(
+                  controller: _rrectController,
+                  // isAlwaysShown: true,
+                  child: ListView.builder(
+                    itemCount: Docs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      //final item = usuarios[index];
+                      return Column(children: <Widget>[ ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return FullPdfViewerScreen(Docs[index].Ruta, Docs[index].Descripcion);
+                    }));
+                  },
+                  leading: SizedBox(
+                    height: 94,
+                    width: 64,
+                    child: Icon(Icons.picture_as_pdf),
+                  ),
+                  title: Text(
+                    '${index + 1} .- ${Docs[index].Descripcion}',
+                    style: new TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.blueGrey,
+                  ),
+                ),]
+              );
+            },
+          ),
+          //    )
+        )
+        )]);
 
-    final body = DefaultTabController(
-        length: 4,
-        child: Builder(builder: (BuildContext context) {
-          return DefaultTabController(
-              length: 4,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                      constraints: BoxConstraints(maxHeight: 150.0),
-                      child: Material(
-                          color: Colors.white, //Theme.of(context).accentColor,
-                          child: TabBar(
-                              indicatorColor: Colors.blue,
-                              labelColor: Colors.blueGrey,
-                              tabs: [
-                                Tab(
-                                    icon: Icon(Icons.account_box),
-                                    text: 'Operador'),
-                                Tab(
-                                    icon: Icon(Icons.fire_truck),
-                                    text: 'Unidad'),
-                                Tab(icon: Icon(Icons.abc), text: 'Remolque'),
-                                Tab(
-                                    icon: Icon(Icons.assignment_outlined),
-                                    text: 'Pedido'),
-                              ]))),
-                  Expanded(
-                    child: TabBarView(children: [
-                      Card(
-                          elevation: 18.0,
-                          color: Colors.grey[200], //indigo[800],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24.0),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: Container(
-                            //width: 100.0,
-                            height: (MediaQuery.of(context).size.height) - 20,
-                            child:
-                                //  Flexible(
-                                //   child:
-                                ListView.builder(
-                              itemCount: Operador.length,
-                              itemBuilder: (context, index) {
-                                final item = Operador[index];
-                                return Card(
-                                  color: Colors.grey[200], //indigo[800],
-                                  child: ListTile(
-                                    onTap: () {
-                                      if (item.Tipo.contains('Imagen')) {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) {
-                                              return Scaffold(
-                                                appBar: AppBar(
-                                                  title: Text(item.Descripcion,
-                                                      style: TextStyle(
-                                                          color: Colors.white)),
-                                                  actions: <Widget>[
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.share,
-                                                        color: Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        shareImg(item.Ruta,
-                                                            item.Descripcion);
-                                                      },
-                                                    ),
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.qr_code,
-                                                        color: Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                          return QrCodeX(
-                                                              item.Ruta);
-                                                        }));
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                body: Container(
-                                                  color: Colors.blueGrey,
-                                                  child:
-                                                      Image.network(item.Ruta),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      } else {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                          return FullPdfViewerScreen(
-                                              item.Ruta, item.Descripcion);
-                                        }));
-                                      }
-                                    },
-                                    leading: SizedBox(
-                                      height: 94,
-                                      width: 64,
-                                      child: item.Tipo.contains('Imagen')
-                                          ? Icon(Icons.image)
-                                          : Icon(Icons.picture_as_pdf),
-                                    ),
-                                    title: Text(
-                                      '${index + 1} .- ${item.Descripcion}',
-                                      style: new TextStyle(
-                                          color: Colors.blueGrey,
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    trailing: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.blueGrey,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            //    )
-                          )),
-                      Card(
-                          elevation: 18.0,
-                          color: Colors.grey[200], //indigo[800],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24.0),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: Container(
-                            //width: 100.0,
-                            height: (MediaQuery.of(context).size.height) - 20,
-                            child:
-                                //  Flexible(
-                                //   child:
-                                ListView.builder(
-                              itemCount: Remolque.length,
-                              itemBuilder: (context, index) {
-                                final item = Remolque[index];
-                                return Card(
-                                  color: Colors.grey[200], //indigo[800],
-                                  child: ListTile(
-                                    onTap: () {
-                                      if (item.Tipo.contains('Imagen')) {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) {
-                                              return Scaffold(
-                                                appBar: AppBar(
-                                                  title: Text(item.Descripcion,
-                                                      style: TextStyle(
-                                                          color: Colors.white)),
-                                                  actions: <Widget>[
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.share,
-                                                        color: Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        shareImg(item.Ruta,
-                                                            item.Descripcion);
-                                                      },
-                                                    ),
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.qr_code,
-                                                        color: Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                          return QrCodeX(
-                                                              item.Ruta);
-                                                        }));
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                body: Container(
-                                                  color: Colors.blueGrey,
-                                                  child:
-                                                      Image.network(item.Ruta),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      } else {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                          return FullPdfViewerScreen(
-                                              item.Ruta, item.Descripcion);
-                                        }));
-                                      }
-                                    },
-                                    leading: SizedBox(
-                                      height: 94,
-                                      width: 64,
-                                      child: item.Tipo.contains('Imagen')
-                                          ? Icon(Icons.image)
-                                          : Icon(Icons.picture_as_pdf),
-                                    ),
-                                    title: Text(
-                                      '${index + 1} .- ${item.Descripcion}',
-                                      style: new TextStyle(
-                                          color: Colors.blueGrey,
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    trailing: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.blueGrey,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            //    )
-                          )),
-                      Card(
-                          elevation: 18.0,
-                          color: Colors.grey[200], //indigo[800],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24.0),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: Container(
-                            //width: 100.0,
-                            height: (MediaQuery.of(context).size.height) - 20,
-                            child:
-                                //  Flexible(
-                                //   child:
-                                ListView.builder(
-                              itemCount: Pedido.length,
-                              itemBuilder: (context, index) {
-                                final item = Pedido[index];
-                                return Card(
-                                  color: Colors.grey[200], //indigo[800],
-                                  child: ListTile(
-                                    onTap: () {
-                                      if (item.Tipo.contains('Imagen')) {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) {
-                                              return Scaffold(
-                                                appBar: AppBar(
-                                                  title: Text(item.Descripcion,
-                                                      style: TextStyle(
-                                                          color: Colors.white)),
-                                                  actions: <Widget>[
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.share,
-                                                        color: Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        shareImg(item.Ruta,
-                                                            item.Descripcion);
-                                                      },
-                                                    ),
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons.qr_code,
-                                                        color: Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                          return QrCodeX(
-                                                              item.Ruta);
-                                                        }));
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                body: Container(
-                                                  color: Colors.blueGrey,
-                                                  child:
-                                                      Image.network(item.Ruta),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      } else {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                          return FullPdfViewerScreen(
-                                              item.Ruta, item.Descripcion);
-                                        }));
-                                      }
-                                    },
-                                    leading: SizedBox(
-                                      height: 94,
-                                      width: 64,
-                                      child: item.Tipo.contains('Imagen')
-                                          ? Icon(Icons.image)
-                                          : Icon(Icons.picture_as_pdf),
-                                    ),
-                                    title: Text(
-                                      '${index + 1} .- ${item.Descripcion}',
-                                      style: new TextStyle(
-                                          color: Colors.blueGrey,
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    trailing: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.blueGrey,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            //    )
-                          )),
-                    ]),
-                  )
-                ],
-              ));
-        }));
-
-    return Scaffold(
+     return Scaffold(
         //resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -633,6 +351,24 @@ class InfoPageState extends State<InfoPageMap> {
                 child: CircularProgressIndicator(
                 color: Colors.blueGrey,
               )));
+  }
+
+
+  List<Documentos> _searchResult = [];
+
+  onSearchTextChanged(String text) async {
+    _searchResult.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    Docs.forEach((DocsDetail) {
+      if (DocsDetail.Descripcion.toUpperCase().contains(text.toUpperCase()))
+        setState(() {
+          _searchResult.add(DocsDetail);
+        });
+    });
   }
 }
 
