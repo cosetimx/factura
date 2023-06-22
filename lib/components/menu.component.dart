@@ -10,8 +10,8 @@ import '../home_page.dart';
 final List<MenuItem> menuItems = <MenuItem>[
   MenuItem('Carta Porte', HomePage(), Icons.home),
 
-  MenuItem('Buscador', CunsultaView(), Icons.search),
-  MenuItem('Facturas', InfoPage(), Icons.search),
+  MenuItem('Estatus', CunsultaView(), Icons.search),
+  MenuItem('Archivos', InfoPage(), Icons.search),
   // MenuItem('Volumen', DiarioPage(), FontAwesome5Solid.calendar_day),
   // MenuItem('Precios', PrecioPage(), FlutterIcons.fuel_mco),
 

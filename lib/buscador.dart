@@ -51,7 +51,7 @@ class CunsultaView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Buscador',
+        title: Text('Estatus de Factura',
             style: TextStyle(
               color: Colors.white,
             )),
@@ -176,7 +176,7 @@ class CunsultaState extends State<CunsultaMap> {
                 padding: EdgeInsets.all(8.0),
                 child: ListTile(
                     leading: Icon(Icons.assignment),
-                    title: Text("Factura a Buscar"),
+                    title: Text("Estatus de Factura a Buscar"),
                     subtitle: TextField(
                       controller: NoFact,
                       keyboardType: TextInputType

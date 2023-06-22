@@ -47,43 +47,46 @@ class InfoPageMap extends StatefulWidget {
 }
 
 class InfoPageState extends State<InfoPageMap> {
-    TextEditingController controller = new TextEditingController();
+  TextEditingController controller = new TextEditingController();
   ScrollController _rrectController = ScrollController();
 
   bool _isLoading = true;
   List<Documentos> Docs = [];
-
 
   Future getList() async {
     Docs = [];
 
     // TODO Conectar con el api php para obtener la lista de documentos
     _isLoading = false;
-
-    //  print('No Emp $noemp');
+    
+    
     try {
       String URL =
           "https://www.halcontracking.com/php/factura/documentos/get_documents.php";
 
       var response = await http.get(Uri.parse(URL));
       var extractdata = json.decode(response.body);
-      print(extractdata);
       var data = extractdata["Documentos"];
       if (extractdata["success"] == 1) {
-        print("Data ${data.length}");
+        print("Data ${data.length - 30}");
+        int Sized = data.length;
         if (data.length != 0) {
-          for (int i = 0; i < data.length; i++) {
+          for (int i = 0; i <= data.length-1; i++) {
             Documentos docs =
                 Documentos(Tipo: '', Descripcion: '', Documento: '', Ruta: '');
             docs.Tipo = data[i]['Tipo'];
             String descripcion = data[i]['Descripcion'];
-            docs.Descripcion = descripcion.replaceAll('_', ' ');
+            docs.Descripcion = descripcion;
             docs.Ruta = data[i]['Ruta'];
             docs.Documento = data[i]['Documento'];
-            setState(() {
-              Docs.add(docs);
-              _isLoading = true;
-            });
+            print('Descripcion $descripcion');
+            var descrip = descripcion.split('-');
+
+            
+              setState(() {
+                Docs.add(docs);
+              });
+            
           }
         } else {
           setState(() {
@@ -155,6 +158,10 @@ class InfoPageState extends State<InfoPageMap> {
       });
       print('Catch $e');
     }
+
+    setState(() {
+      _isLoading = true;
+    });
   }
 
   shareImg(String Url, String Descripcion) async {
@@ -227,7 +234,7 @@ class InfoPageState extends State<InfoPageMap> {
         ));
 
     final body1 = new Column(children: <Widget>[
-       Container(
+      Container(
         color: Theme.of(context).primaryColor,
         child: Card(
           child: new ListTile(
@@ -251,7 +258,7 @@ class InfoPageState extends State<InfoPageMap> {
           ),
         ),
       ),
-       Expanded(
+      Expanded(
           child: _searchResult.length != 0 || controller.text.isNotEmpty
               ? Scrollbar(
                   controller: _rrectController,
@@ -260,79 +267,83 @@ class InfoPageState extends State<InfoPageMap> {
                     itemCount: _searchResult.length,
                     itemBuilder: (BuildContext context, int index) {
                       //final item = usuarios[index];
-                      return Column(children: <Widget>[ ListTile(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return FullPdfViewerScreen(_searchResult[index].Ruta, _searchResult[index].Descripcion);
-                    }));
-                  },
-                  leading: SizedBox(
-                    height: 94,
-                    width: 64,
-                    child: Icon(Icons.picture_as_pdf),
+                      return Column(children: <Widget>[
+                        ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return FullPdfViewerScreen(
+                                  _searchResult[index].Ruta,
+                                  _searchResult[index].Descripcion);
+                            }));
+                          },
+                          leading: SizedBox(
+                            height: 94,
+                            width: 64,
+                            child: Icon(Icons.picture_as_pdf),
+                          ),
+                          title: Text(
+                            '${index + 1} .- ${_searchResult[index].Descripcion}',
+                            style: new TextStyle(
+                                color: Colors.blueGrey,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.blueGrey,
+                          ),
+                        ),
+                      ]);
+                    },
                   ),
-                  title: Text(
-                    '${index + 1} .- ${_searchResult[index].Descripcion}',
-                    style: new TextStyle(
-                        color: Colors.blueGrey,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.blueGrey,
-                  ),
-                ),]
-              );
-            },
-          ),
-          //    )
-        )
-        :
-        Scrollbar(
+                  //    )
+                )
+              : Scrollbar(
                   controller: _rrectController,
                   // isAlwaysShown: true,
                   child: ListView.builder(
                     itemCount: Docs.length,
                     itemBuilder: (BuildContext context, int index) {
                       //final item = usuarios[index];
-                      return Column(children: <Widget>[ ListTile(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return FullPdfViewerScreen(Docs[index].Ruta, Docs[index].Descripcion);
-                    }));
-                  },
-                  leading: SizedBox(
-                    height: 94,
-                    width: 64,
-                    child: Icon(Icons.picture_as_pdf),
+                      return Column(children: <Widget>[
+                        ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return FullPdfViewerScreen(
+                                  Docs[index].Ruta, Docs[index].Descripcion);
+                            }));
+                          },
+                          leading: SizedBox(
+                            height: 94,
+                            width: 64,
+                            child: Icon(Icons.picture_as_pdf),
+                          ),
+                          title: Text(
+                            '${index + 1} .- ${Docs[index].Descripcion}',
+                            style: new TextStyle(
+                                color: Colors.blueGrey,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.blueGrey,
+                          ),
+                        ),
+                      ]);
+                    },
                   ),
-                  title: Text(
-                    '${index + 1} .- ${Docs[index].Descripcion}',
-                    style: new TextStyle(
-                        color: Colors.blueGrey,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.blueGrey,
-                  ),
-                ),]
-              );
-            },
-          ),
-          //    )
-        )
-        )]);
+                  //    )
+                ))
+    ]);
 
-     return Scaffold(
+    return Scaffold(
         //resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('Documentación'),
+          title: Text('Archivos'),
           actions: <Widget>[
             IconButton(
               icon: Icon(
@@ -352,7 +363,6 @@ class InfoPageState extends State<InfoPageMap> {
                 color: Colors.blueGrey,
               )));
   }
-
 
   List<Documentos> _searchResult = [];
 
