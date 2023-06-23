@@ -46,6 +46,9 @@ class Consulta {
   String total;
   String moneda;
   String fecha;
+  String tipo;
+  String clasificacion;
+  String remolque;
 
   Consulta({
     required this.no_guia,
@@ -71,6 +74,9 @@ class Consulta {
     required this.total,
     required this.moneda,
     required this.fecha,
+    required this.tipo,
+    required this.clasificacion,
+    required this.remolque,
   });
 
   factory Consulta.fromJson(Map<String, dynamic> parsedJson) {
@@ -97,7 +103,11 @@ class Consulta {
         retencion: parsedJson['Retencion'],
         total: parsedJson['Total'],
         moneda: parsedJson['Moneda'],
-        fecha: parsedJson['Fecha']);
+        fecha: parsedJson['Fecha'],
+        tipo: parsedJson['tipo'],
+        clasificacion: parsedJson['clasificacion'],
+        remolque: parsedJson['remolque']
+        );
   }
 }
 
@@ -366,7 +376,7 @@ class HomePageState extends State<HomePageMap> {
     String coms = descripcion;
 
     String URLs =
-        "https://www.halcontracking.com/php/factura/cancelar.php?fact=$factura&user=$user&coms=$coms";
+        "https://www.halcontracking.com/php/factura/regresar.php?fact=$factura&user=$user&coms=$coms";
 
     print(URLs);
     var response = await http.get(Uri.parse(URLs));
@@ -980,6 +990,42 @@ class HomePageState extends State<HomePageMap> {
                                       // fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                     Text(
+                                    'Tipo de movimiento',
+                                    style: TextStyle(
+                                        color: Colors.teal[800],
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10.0),
+                                  ),
+                                  Text(
+                                    '${Factura[index].tipo}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                      Text(
+                                    'Remolque',
+                                    style: TextStyle(
+                                        color: Colors.teal[800],
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10.0),
+                                  ),
+                                  Text(
+                                    '${Factura[index].remolque}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Text(
                                     'Calle',
                                     style: TextStyle(
@@ -1157,6 +1203,24 @@ class HomePageState extends State<HomePageMap> {
                                               fontWeight: FontWeight.bold),
                                         )
                                       : SizedBox(),
+                                          Text(
+                                    'Clasificación',
+                                    style: TextStyle(
+                                        color: Colors.teal[800],
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10.0),
+                                  ),
+                                  Text(
+                                    '${Factura[index].clasificacion}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Text(
                                     'RFC',
                                     style: TextStyle(
