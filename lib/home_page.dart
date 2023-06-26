@@ -106,8 +106,7 @@ class Consulta {
         fecha: parsedJson['Fecha'],
         tipo: parsedJson['tipo'],
         clasificacion: parsedJson['clasificacion'],
-        remolque: parsedJson['remolque']
-        );
+        remolque: parsedJson['remolque']);
   }
 }
 
@@ -552,7 +551,7 @@ class HomePageState extends State<HomePageMap> {
                 content: Text('Error de Conexion'),
                 actions: <Widget>[
                   CupertinoDialogAction(
-                    child: Text('NO'),
+                    child: Text('Cerrar'),
                     onPressed: () async {
                       Navigator.of(context).pop();
                       setState(() {});
@@ -588,7 +587,7 @@ class HomePageState extends State<HomePageMap> {
                     ),
                     actions: <Widget>[
                       CupertinoDialogAction(
-                        child: Text('SI'),
+                        child: Text('Si'),
                         onPressed: () {
                           setState(() {
                             cancelar();
@@ -597,7 +596,7 @@ class HomePageState extends State<HomePageMap> {
                         },
                       ),
                       CupertinoDialogAction(
-                        child: Text('NO'),
+                        child: Text('No'),
                         onPressed: () async {
                           Navigator.of(contexts).pop();
                           setState(() {});
@@ -633,7 +632,7 @@ class HomePageState extends State<HomePageMap> {
                     "Atención",
                   ),
                   content: Text(
-                    "¿Deseas Ingresar esta Factura?",
+                    "¿Deseas Timbrar esta Carta Porte?",
                   ),
                   actions: <Widget>[
                     CupertinoDialogAction(
@@ -672,7 +671,7 @@ class HomePageState extends State<HomePageMap> {
                     "Atención",
                   ),
                   content: Text(
-                    "¿Deseas Regresar esta Factura?",
+                    "¿Deseas Regresar esta Carta Porte?",
                   ),
                   actions: <Widget>[
                     CupertinoDialogAction(
@@ -990,7 +989,7 @@ class HomePageState extends State<HomePageMap> {
                                       // fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                     Text(
+                                  Text(
                                     'Tipo de movimiento',
                                     style: TextStyle(
                                         color: Colors.teal[800],
@@ -1008,7 +1007,7 @@ class HomePageState extends State<HomePageMap> {
                                       // fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                      Text(
+                                  Text(
                                     'Remolque',
                                     style: TextStyle(
                                         color: Colors.teal[800],
@@ -1203,7 +1202,7 @@ class HomePageState extends State<HomePageMap> {
                                               fontWeight: FontWeight.bold),
                                         )
                                       : SizedBox(),
-                                          Text(
+                                  Text(
                                     'Clasificación',
                                     style: TextStyle(
                                         color: Colors.teal[800],

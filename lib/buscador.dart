@@ -1,4 +1,4 @@
-import 'dart:core';
+//import 'dart:core';
 import 'dart:io';
 
 import 'Globals.dart' as globals;
@@ -75,22 +75,22 @@ class CunsultaState extends State<CunsultaMap> {
   bool _isLoading = false;
   bool cargado = false;
 
-  String factura = '';
+  //String factura = '';
   HttpClient client = new HttpClient();
-  String descripcion = '';
+  //String descripcion = '';
   String _Estatus = '';
-  var Logs = [];
+  List Logs = [];
   @override
   void initState() {
     super.initState();
   }
 
-  Future<void> _data(String factura) async {
+  Future<void> _data(String _factura) async {
     _isLoading = true;
-    Factura = [];
-
+    //  Factura = [];
+    //  Logs = [];
     String URLs =
-        "https://www.halcontracking.com/php/factura/consulta.php?fact=$factura";
+        "https://www.halcontracking.com/php/factura/consulta.php?fact=$_factura";
 
     print(URLs);
     var response = await http.get(Uri.parse(URLs));
@@ -98,56 +98,41 @@ class CunsultaState extends State<CunsultaMap> {
     var jsonResponse = json.decode(response.body);
 
     print("Resultados $jsonResponse");
+
     if (response.statusCode == 200) {
-      //   try {
       if (jsonResponse['success'] == 1) {
         var datos = await jsonResponse['Result'];
 
         print('Datos $datos');
 
-        Consulta factura = Consulta(
+        Consulta facturaS = Consulta(
             accion: datos[0]['accion'],
             log: datos[0]['log'],
             no_guia: datos[0]['num_guia'],
             status: datos[0]['status']);
 
-        if (datos[0]['log'] != '') {
+        if (facturaS.log != '') {
           Logs = datos[0]['log'].toString().split('|');
+        } else {
+          Logs = [];
         }
 
         setState(() {
-          Factura.add(factura);
+          Factura.add(facturaS);
+          NoFact = TextEditingController(text: "");
         });
       }
-      /*  } catch (e) {
-        print('Error $e');
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return CupertinoAlertDialog(
-                  title: Text('Atención'),
-                  content: Text('Error $e'),
-                  actions: <Widget>[
-                    CupertinoDialogAction(
-                      child: Text('NO'),
-                      onPressed: () async {
-                        Navigator.of(context).pop();
-                        setState(() {});
-                      },
-                    ),
-                  ]);
-            });
-      } */
     } else {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return CupertinoAlertDialog(
                 title: Text('Atención'),
-                content: Text('Error Folio no Encontrado o mal capturado, Favor de Verificar'),
+                content: Text(
+                    'Error Folio no Encontrado o mal capturado, Favor de Verificar'),
                 actions: <Widget>[
                   CupertinoDialogAction(
-                    child: Text('NO'),
+                    child: Text('Cerrar'),
                     onPressed: () async {
                       Navigator.of(context).pop();
                       setState(() {});
@@ -212,7 +197,6 @@ class CunsultaState extends State<CunsultaMap> {
                         onPressed: () {
                           setState(() {
                             Factura = [];
-
                             NoFact = TextEditingController(text: "");
                           });
                         },
@@ -296,17 +280,29 @@ class CunsultaState extends State<CunsultaMap> {
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0),
                         ),
-                        Text(
-                          '${Logs[2]}',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 10,
-                          softWrap: false,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12.0,
-                            // fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        Logs.isEmpty
+                            ? Text(
+                                '',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 10,
+                                softWrap: false,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12.0,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : Text(
+                                '${Logs[2]}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 10,
+                                softWrap: false,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12.0,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ],
                     )))),
           );

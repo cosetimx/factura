@@ -58,8 +58,7 @@ class InfoPageState extends State<InfoPageMap> {
 
     // TODO Conectar con el api php para obtener la lista de documentos
     _isLoading = false;
-    
-    
+
     try {
       String URL =
           "https://www.halcontracking.com/php/factura/documentos/get_documents.php";
@@ -71,7 +70,7 @@ class InfoPageState extends State<InfoPageMap> {
         print("Data ${data.length - 30}");
         int Sized = data.length;
         if (data.length != 0) {
-          for (int i = 0; i <= data.length-1; i++) {
+          for (int i = 0; i <= data.length - 1; i++) {
             Documentos docs =
                 Documentos(Tipo: '', Descripcion: '', Documento: '', Ruta: '');
             docs.Tipo = data[i]['Tipo'];
@@ -82,11 +81,9 @@ class InfoPageState extends State<InfoPageMap> {
             print('Descripcion $descripcion');
             var descrip = descripcion.split('-');
 
-            
-              setState(() {
-                Docs.add(docs);
-              });
-            
+            setState(() {
+              Docs.add(docs);
+            });
           }
         } else {
           setState(() {
@@ -118,7 +115,7 @@ class InfoPageState extends State<InfoPageMap> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: new Text("Atención"),
-                content: new Text("Sin Documentación "),
+                content: new Text("Favor de intentar más tarde"),
                 actions: <Widget>[
                   new TextButton(
                       onPressed: () {
