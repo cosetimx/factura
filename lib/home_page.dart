@@ -106,7 +106,7 @@ class Consulta {
         fecha: parsedJson['Fecha'],
         tipo: parsedJson['tipo'],
         clasificacion: parsedJson['clasificacion'],
-        remolque: parsedJson['remolque']);
+        remolque: parsedJson['remolque'] ?? '');
   }
 }
 
