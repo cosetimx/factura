@@ -509,6 +509,10 @@ class HomePageState extends State<HomePageMap> {
               regresar = true;
               _Estatus = 'Regreso';
               break;
+            case 'T':
+              pendiente = true;
+              _Estatus = 'Transito';
+              break;
           }
 
           setState(() {
