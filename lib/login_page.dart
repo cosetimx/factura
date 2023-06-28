@@ -136,7 +136,7 @@ class LoginPageState extends State<LoginPageMap> {
                   globals.PASSWD = passwd.text;
                   globals.USERS = users.text;
                   globals.NOMBRE = data['result'][0]['nombre'];
-                  globals.TIPO = data['result'][0]['tipo'];
+                 // globals.TIPO = data['result'][0]['tipo'];
                   globals.USERLIS = data['result'][0]['usuariolis'];
                   Navigator.pushNamed(context, HomePage.tag);
                   _loading = false;
@@ -202,7 +202,7 @@ class LoginPageState extends State<LoginPageMap> {
         control,
         // Version
         Text(
-          'V 1.11.30',
+          'V ${globals.Version}',
           style: TextStyle(fontSize: 8.0, color: Colors.teal),
         ),
         user,
