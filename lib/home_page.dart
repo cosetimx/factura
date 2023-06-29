@@ -49,6 +49,7 @@ class Consulta {
   String tipo;
   String clasificacion;
   String remolque;
+  String operador;
 
   Consulta({
     required this.no_guia,
@@ -77,6 +78,7 @@ class Consulta {
     required this.tipo,
     required this.clasificacion,
     required this.remolque,
+    required this.operador,
   });
 
   factory Consulta.fromJson(Map<String, dynamic> parsedJson) {
@@ -106,6 +108,7 @@ class Consulta {
         fecha: parsedJson['Fecha'],
         tipo: parsedJson['tipo'],
         clasificacion: parsedJson['clasificacion'],
+        operador: parsedJson['operador'],
         remolque: parsedJson['remolque'] ?? '');
   }
 }
@@ -192,7 +195,7 @@ class HomePageState extends State<HomePageMap> {
     try {
       var jsonResponse = json.decode(response.body);
 
-      if (jsonResponse['Success'] == 1) {
+      if (jsonResponse['success'] == 1) {
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -730,15 +733,18 @@ class HomePageState extends State<HomePageMap> {
                     ),
                     trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                       IconButton(
-                        iconSize: 18,
-                        icon: Icon(
-                          Icons.check,
-                          color: Colors.teal[800],
-                        ),
-                        onPressed: () {
-                          _data(NoFact.text);
-                        },
-                      ),
+                          iconSize: 18,
+                          icon: Icon(
+                            Icons.check,
+                            color: Colors.teal[800],
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              Factura = [];
+                              OtrosConcepts = [];
+                              _data(NoFact.text);
+                            });
+                          }),
                       IconButton(
                         icon: Icon(
                           Icons.cancel,
@@ -1156,6 +1162,24 @@ class HomePageState extends State<HomePageMap> {
                                     ),
                                   ),
                                   Text(
+                                    'Total',
+                                    style: TextStyle(
+                                        color: Colors.teal[800],
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10.0),
+                                  ),
+                                  Text(
+                                    '${Factura[index].total}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
                                     'Moneda',
                                     style: TextStyle(
                                         color: Colors.teal[800],
@@ -1189,6 +1213,24 @@ class HomePageState extends State<HomePageMap> {
                                   ),
                                   Text(
                                     '${Factura[index].factura}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.0,
+                                      //  fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Operador',
+                                    style: TextStyle(
+                                        color: Colors.teal[800],
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10.0),
+                                  ),
+                                  Text(
+                                    '${Factura[index].operador}',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,
                                     softWrap: false,
