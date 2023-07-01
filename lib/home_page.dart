@@ -25,18 +25,33 @@ bool vacia = false;
 class Consulta {
   String no_guia;
   String factura;
-  String status;
+  String carta_porte;
+  String status_guia;
   String timbrada;
   String cliente;
-  String rfc;
-  String calle;
-  String numero;
-  String colonia;
-  String municipio;
-  String localidad;
-  String codigo_postal;
+  String rfc_cliente;
+  String calle_cliente;
+  String numero_cliente;
+  String colonia_cliente;
+  String municipio_cliente;
+  String localidad_cliente;
+  String cp_cliente;
   String remitente;
+  String rfc_remi;
+  String calle_remi;
+  String numero_remi;
+  String colonia_remi;
+  String municipio_remi;
+  String localidad_remi;
+  String cp_remi;
   String destinatario;
+  String rfc_desti;
+  String calle_desti;
+  String numero_desti;
+  String colonia_desti;
+  String municipio_desti;
+  String localidad_desti;
+  String cp_desti;
   String flete;
   String autopistas;
   String otros;
@@ -53,19 +68,34 @@ class Consulta {
 
   Consulta({
     required this.no_guia,
+    required this.carta_porte,
     required this.factura,
-    required this.status,
+    required this.status_guia,
     required this.timbrada,
     required this.cliente,
-    required this.rfc,
-    required this.calle,
-    required this.numero,
-    required this.colonia,
-    required this.municipio,
-    required this.localidad,
-    required this.codigo_postal,
+    required this.rfc_cliente,
+    required this.calle_cliente,
+    required this.numero_cliente,
+    required this.colonia_cliente,
+    required this.municipio_cliente,
+    required this.localidad_cliente,
+    required this.cp_cliente,
     required this.remitente,
+    required this.rfc_remi,
+    required this.calle_remi,
+    required this.numero_remi,
+    required this.colonia_remi,
+    required this.municipio_remi,
+    required this.localidad_remi,
+    required this.cp_remi,
     required this.destinatario,
+    required this.rfc_desti,
+    required this.calle_desti,
+    required this.numero_desti,
+    required this.colonia_desti,
+    required this.municipio_desti,
+    required this.localidad_desti,
+    required this.cp_desti,
     required this.flete,
     required this.autopistas,
     required this.otros,
@@ -84,26 +114,41 @@ class Consulta {
   factory Consulta.fromJson(Map<String, dynamic> parsedJson) {
     return Consulta(
         no_guia: parsedJson['no_guia'].toString(),
+        carta_porte: parsedJson['carta_porte'].toString(),
         factura: parsedJson['factura'],
-        status: parsedJson['status_guia'],
+        status_guia: parsedJson['status_guia'],
         timbrada: parsedJson['timbrada'] ?? '',
         cliente: parsedJson['cliente'],
-        rfc: parsedJson['rfc'],
-        calle: parsedJson['calle'],
-        numero: parsedJson['numero'],
-        colonia: parsedJson['colonia'],
-        municipio: parsedJson['municipio'],
-        localidad: parsedJson['localidad'],
-        codigo_postal: parsedJson['codigo_postal'].toString(),
+        rfc_cliente: parsedJson['rfc_cliente'],
+        calle_cliente: parsedJson['calle_cliente'],
+        numero_cliente: parsedJson['numero_cliente'],
+        colonia_cliente: parsedJson['colonia_cliente'],
+        municipio_cliente: parsedJson['municipio_cliente'],
+        localidad_cliente: parsedJson['localidad_cliente'],
+        cp_cliente: parsedJson['cp_cliente'].toString(),
         remitente: parsedJson['remitente'],
+        rfc_remi: parsedJson['rfc_remi'],
+        calle_remi: parsedJson['calle_remi'],
+        numero_remi: parsedJson['numero_remi'],
+        colonia_remi: parsedJson['colonia_remi'],
+        municipio_remi: parsedJson['municipio_remi'],
+        localidad_remi: parsedJson['localidad_remi'],
+        cp_remi: parsedJson['cp_remi'].toString(),
         destinatario: parsedJson['destinatario'],
-        flete: parsedJson['Flete'],
-        autopistas: parsedJson['Autopistas'],
-        otros: parsedJson['Otros'],
-        subtotal: parsedJson['Subtotal'],
-        iva: parsedJson['IVA'],
-        retencion: parsedJson['Retencion'],
-        total: parsedJson['Total'],
+        rfc_desti: parsedJson['rfc_desti'],
+        calle_desti: parsedJson['calle_desti'],
+        numero_desti: parsedJson['numero_desti'],
+        colonia_desti: parsedJson['colonia_desti'],
+        municipio_desti: parsedJson['municipio_desti'],
+        localidad_desti: parsedJson['localidad_desti'],
+        cp_desti: parsedJson['cp_desti'].toString(),
+        flete: double.parse(parsedJson['Flete']).toStringAsFixed(2),
+        autopistas: double.parse(parsedJson['Autopistas']).toStringAsFixed(2),
+        otros: double.parse(parsedJson['Otros']).toStringAsFixed(2),
+        subtotal: double.parse(parsedJson['Subtotal']).toStringAsFixed(2),
+        iva: double.parse(parsedJson['IVA']).toStringAsFixed(2),
+        retencion: double.parse(parsedJson['Retencion']).toStringAsFixed(2),
+        total: double.parse(parsedJson['Total']).toStringAsFixed(2),
         moneda: parsedJson['Moneda'],
         fecha: parsedJson['Fecha'],
         tipo: parsedJson['tipo'],
@@ -132,10 +177,10 @@ class OtrosConceptos {
     return OtrosConceptos(
       //  id: parsedJson['id'],
       desc_otro: parsedJson['desc_otro'],
-      monto: parsedJson['monto'],
-      monto_iva_otro: parsedJson['monto_iva_otro'],
-      monto_retencion: parsedJson['monto_retencion'],
-      total: parsedJson['total'],
+      monto: double.parse( parsedJson['monto']).toStringAsFixed(2),
+      monto_iva_otro: double.parse(parsedJson['monto_iva_otro']).toStringAsFixed(2),
+      monto_retencion: double.parse(parsedJson['monto_retencion']).toStringAsFixed(2),
+      total: double.parse(parsedJson['total']).toStringAsFixed(2),
     );
   }
 }
@@ -484,52 +529,52 @@ class HomePageState extends State<HomePageMap> {
 
     final jsonResponse = json.decode(response.body);
     if (response.statusCode == 200) {
-      try {
-        List Szs = jsonResponse['Result'][1]['Otros'];
+       try {
+      List Szs = jsonResponse['Result'][1]['Otros'];
 
-        int Sizes = Szs.length;
+      int Sizes = Szs.length;
 
-        if (jsonResponse['success'] == 1) {
-          var Datos = await jsonResponse['Result'][0]['Factura'][0];
+      if (jsonResponse['success'] == 1) {
+        var Datos = await jsonResponse['Result'][0]['Factura'][0];
 
-          Consulta factura = new Consulta.fromJson(Datos);
-          cargado = true;
+        Consulta factura = new Consulta.fromJson(Datos);
+        cargado = true;
 
-          switch (factura.status) {
-            case 'A':
-              pendiente = true;
-              _Estatus = 'Pendiente';
-              break;
-            case 'B':
-              cancelada = true;
-              _Estatus = 'Cancelada';
-              break;
-            case 'C':
-              timbrada = true;
-              _Estatus = 'Confirmada';
-              break;
-            case 'R':
-              regresar = true;
-              _Estatus = 'Regreso';
-              break;
-            case 'T':
-              pendiente = true;
-              _Estatus = 'Transito';
-              break;
-          }
-
-          setState(() {
-            Factura.add(factura);
-          });
-          for (var i = 0; i < Sizes; i++) {
-            var ODatos = jsonResponse['Result'][1]['Otros'][i];
-            OtrosConceptos OtrosDatos = new OtrosConceptos.fromJson(ODatos);
-            setState(() {
-              OtrosConcepts.add(OtrosDatos);
-            });
-          }
+        switch (factura.status_guia) {
+          case 'A':
+            pendiente = true;
+            _Estatus = 'Pendiente';
+            break;
+          case 'B':
+            cancelada = true;
+            _Estatus = 'Cancelada';
+            break;
+          case 'C':
+            timbrada = true;
+            _Estatus = 'Confirmada';
+            break;
+          case 'R':
+            regresar = true;
+            _Estatus = 'Regreso';
+            break;
+          case 'T':
+            pendiente = true;
+            _Estatus = 'Transito';
+            break;
         }
-      } catch (e) {
+
+        setState(() {
+          Factura.add(factura);
+        });
+        for (var i = 0; i < Sizes; i++) {
+          var ODatos = jsonResponse['Result'][1]['Otros'][i];
+          OtrosConceptos OtrosDatos = new OtrosConceptos.fromJson(ODatos);
+          setState(() {
+            OtrosConcepts.add(OtrosDatos);
+          });
+        }
+      }
+       } catch (e) {
         print('Error $e');
         showDialog(
             context: context,
@@ -548,7 +593,7 @@ class HomePageState extends State<HomePageMap> {
                     ),
                   ]);
             });
-      }
+      } 
     } else {
       showDialog(
           context: context,
@@ -764,61 +809,125 @@ class HomePageState extends State<HomePageMap> {
                       )
                     ])))));
 
-    final ListOtros = ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: OtrosConcepts.length,
-        itemBuilder: (context, index) {
-          return Container(
-              height: 105,
-              child: Card(
-                  elevation: 18.0,
-                  color: Colors.grey[100],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: Padding(
-                      padding: EdgeInsets.all(6.0),
-                      child: Row(children: [
-                        Expanded(
-                          child: Column(
+    final ListOtros = Card(
+        elevation: 18.0,
+        color: Colors.grey[100],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Padding(
+            padding: EdgeInsets.all(6.0),
+            child:
+            Column(children: [
+              Text('Otros Concetos', style: TextStyle(
+                                      color: Colors.teal[800],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0),),
+             Row(children: [
+              Expanded(
+                  child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: OtrosConcepts.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            child: 
+                            Column(children: [                            Row(children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+
+                                Row(children: [
+                                  Text(
+                                    'Descripción: ',
+                                    style: TextStyle(
+                                        color: Colors.teal[800],
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10.0),
+                                  ),
+                                  Text(
+                                    '${OtrosConcepts[index].desc_otro}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 10.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ]),
+                                Row(children: [
+                                  Text(
+                                    'IVA: ',
+                                    style: TextStyle(
+                                        color: Colors.teal[800],
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10.0),
+                                  ),
+                                  Text(
+                                    '${OtrosConcepts[index].monto_iva_otro}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 10.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ]),
+
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                              child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                'Descripción',
-                                style: TextStyle(
-                                    color: Colors.teal[800],
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10.0),
-                              ),
-                              Text(
-                                '${OtrosConcepts[index].desc_otro}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12.0,
-                                  // fontWeight: FontWeight.bold,
+                              Row(children: [
+                                Text(
+                                  'Monto: ',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.teal[800],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.0),
                                 ),
-                              ),
-                              Text(
-                                'IVA',
-                                style: TextStyle(
-                                    color: Colors.teal[800],
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10.0),
-                              ),
-                              Text(
-                                '${OtrosConcepts[index].monto_iva_otro}',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
-                                softWrap: false,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12.0,
-                                  // fontWeight: FontWeight.bold,
+                                Text(
+                                  '${OtrosConcepts[index].monto}',
+                                  style: TextStyle(
+                                    fontSize: 10.0,
+                                    color: Colors.black,
+                                    //  fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
+                              ]),
+                              Row(children: [
+                                Text(
+                                  'Retención: ',
+                                  style: TextStyle(
+                                      color: Colors.teal[800],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  '${OtrosConcepts[index].monto_retencion}',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10.0,
+                                    //  fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ])
+                            ],
+                          )),
+                          Expanded(
+                            child: Column(children: [
                               Text(
                                 'Total',
                                 style: TextStyle(
@@ -833,56 +942,18 @@ class HomePageState extends State<HomePageMap> {
                                 softWrap: false,
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 12.0,
+                                  fontSize: 10.0,
                                   //  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ],
+                            ]),
                           ),
-                        ),
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Monto',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.teal[800],
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10.0),
-                            ),
-                            Text(
-                              '${OtrosConcepts[index].monto}',
-                              style: TextStyle(
-                                fontSize: 12.0,
-                                color: Colors.black,
-                                //  fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'Retención',
-                              style: TextStyle(
-                                  color: Colors.teal[800],
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10.0),
-                            ),
-                            Text(
-                              '${OtrosConcepts[index].monto_retencion}',
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 3,
-                              softWrap: false,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12.0,
-                                //  fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ))
-                      ]))));
-        });
+                        ]),                          Divider(height: 5,color: Colors.teal,)
+             ])
+                        );
+                      }))
+            ]), 
+            ])));
 
     final cancela = Card(
         elevation: 18.0,
@@ -922,193 +993,659 @@ class HomePageState extends State<HomePageMap> {
         itemCount: Factura.length,
         itemBuilder: (context, index) {
           return Container(
-            height: 330,
-            child: Card(
-                elevation: 18.0,
-                color: Colors.grey[100],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Estatus   $_Estatus',
-                              style: TextStyle(
-                                  color: Colors.teal[800],
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0),
+              height: 330,
+              child: Column(
+                children: [
+                  Card(
+                      elevation: 18.0,
+                      color: Colors.grey[100],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SingleChildScrollView(
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                Text(
+                                  'Estatus: $_Estatus',
+                                  style: TextStyle(
+                                      color: Colors.teal[800],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                IntrinsicHeight(
+                                    child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text(
+                                          'Fecha:',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.teal[800],
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10.0),
+                                        ),
+                                        Text(
+                                          '${Factura[index].fecha}',
+                                          style: TextStyle(
+                                            fontSize: 10.0,
+                                            color: Colors.black,
+                                            // fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const VerticalDivider(
+                                      color: Colors.teal,
+                                      width: 5,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          'Guía:',
+                                          style: TextStyle(
+                                              color: Colors.teal[800],
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10.0),
+                                        ),
+                                        Text(
+                                          '${Factura[index].no_guia}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 10.0,
+                                            //  fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const VerticalDivider(
+                                      color: Colors.teal,
+                                      width: 5,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          'Carta Porte:',
+                                          style: TextStyle(
+                                              color: Colors.teal[800],
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10.0),
+                                        ),
+                                        Text(
+                                          '${Factura[index].carta_porte}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 10.0,
+                                            //  fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const VerticalDivider(
+                                      color: Colors.teal,
+                                      width: 5,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          'Factura:',
+                                          style: TextStyle(
+                                              color: Colors.teal[800],
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10.0),
+                                        ),
+                                        Text(
+                                          '${Factura[index].factura}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 10.0,
+                                            //  fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ))
+                              ])))),
+                  Card(
+                      elevation: 18.0,
+                      color: Colors.grey[100],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SingleChildScrollView(
+                            child: IntrinsicHeight(
+                              child: Row(children: [
+                                Expanded(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Cliente: ',
+                                          style: TextStyle(
+                                              color: Colors.teal[800],
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10.0),
+                                        ),
+                                        Text(
+                                          '${Factura[index].cliente}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 10.0,
+                                            // fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Row(children: [
+                                      Text(
+                                        'Remitente: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].remitente}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          //  fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'RFC: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].rfc_cliente}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Municipio: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].municipio_cliente}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Localidad: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].localidad_cliente}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Numero: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].numero_cliente}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Colonia: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].colonia_cliente}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          //  fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Calle: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].calle_cliente}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Codigo Postal: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].cp_cliente}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                  ],
+                                )),
+                                const VerticalDivider(
+                                  color: Colors.teal,
+                                  width: 5,
+                                ),
+                                const SizedBox(width: 15),
+                                Expanded(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Row(children: [
+                                      Text(
+                                        'Destinatario: ',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].destinatario}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          //  fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'RFC: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].rfc_desti}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Municipio: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].municipio_desti}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Localidad: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].localidad_desti}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Numero: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].numero_desti}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Colonia: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].colonia_desti}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          //  fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Calle: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].calle_desti}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'Codigo Postal: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${Factura[index].cp_desti}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                  ],
+                                ))
+                              ]),
                             ),
-                            Row(children: [
+                          ))),
+                  Card(
+                      elevation: 18.0,
+                      color: Colors.grey[100],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SingleChildScrollView(
+                              child: IntrinsicHeight(
+                                  child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Expanded(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Tipo de Movimiento: ',
+                                          style: TextStyle(
+                                              color: Colors.teal[800],
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10.0),
+                                        ),
+                                        Text(
+                                          '${Factura[index].tipo}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 10.0,
+                                            //  fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Operador: ',
+                                          style: TextStyle(
+                                              color: Colors.teal[800],
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10.0),
+                                        ),
+                                        Text(
+                                          '${Factura[index].operador}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 10.0,
+                                            //  fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const VerticalDivider(
+                                color: Colors.teal,
+                                width: 5,
+                              ),
+                              SizedBox(width: 15),
+                              Expanded(
+                                  child: Column(children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Clasificación: ',
+                                      style: TextStyle(
+                                          color: Colors.teal[800],
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10.0),
+                                    ),
+                                    Text(
+                                      '${Factura[index].clasificacion}',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 3,
+                                      softWrap: false,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10.0,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Remolque: ',
+                                      style: TextStyle(
+                                          color: Colors.teal[800],
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10.0),
+                                    ),
+                                    Text(
+                                      '${Factura[index].remolque}',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 3,
+                                      softWrap: false,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10.0,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ]))
+                            ],
+                          ))))),
+                  Card(
+                      elevation: 18.0,
+                      color: Colors.grey[100],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SingleChildScrollView(
+                              child: IntrinsicHeight(
+                                  child: Row(children: [
+                            Expanded(
+                              child: Column(
                                 children: [
                                   Text(
-                                    'Guía',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].no_guia}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Fecha',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].fecha}',
-                                    style: TextStyle(
-                                      fontSize: 12.0,
-                                      color: Colors.black,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Cliente',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].cliente}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Tipo de movimiento',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].tipo}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Remolque',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].remolque}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Calle',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].calle}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Colonia',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].colonia}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Localidad',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].localidad}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Remitente',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].remitente}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Flete',
+                                    'Flete:',
                                     style: TextStyle(
                                         color: Colors.teal[800],
                                         fontWeight: FontWeight.bold,
@@ -1121,322 +1658,156 @@ class HomePageState extends State<HomePageMap> {
                                     softWrap: false,
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 12.0,
+                                      fontSize: 10.0,
                                       // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Otros',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].otros}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'IVA',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].iva}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Total',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].total}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Moneda',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].moneda}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
-                              )),
-                              Expanded(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Carta Porte',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(children: [
+                                Text(
+                                  'Autopistas:',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                      color: Colors.teal[800],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  '${Factura[index].autopistas}',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10.0,
+                                    //   fontWeight: FontWeight.bold,
                                   ),
-                                  Text(
-                                    '${Factura[index].factura}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
-                                    ),
+                                ),
+                              ]),
+                            ),
+                            Expanded(
+                              child: Column(children: [
+                                Text(
+                                  'Otros:',
+                                  style: TextStyle(
+                                      color: Colors.teal[800],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  '${Factura[index].otros}',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10.0,
+                                    //  fontWeight: FontWeight.bold,
                                   ),
-                                  Text(
-                                    'Operador',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
+                                ),
+                              ]),
+                            ),
+                            Expanded(
+                              child: Column(children: [
+                                Text(
+                                  'SubTotal:',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                      color: Colors.teal[800],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  '${Factura[index].subtotal}',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10.0,
+                                    //  fontWeight: FontWeight.bold,
                                   ),
-                                  Text(
-                                    '${Factura[index].operador}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
-                                    ),
+                                ),
+                              ]),
+                            ),
+                            Expanded(
+                              child: Column(children: [
+                                Text(
+                                  'IVA:',
+                                  style: TextStyle(
+                                      color: Colors.teal[800],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  '${Factura[index].iva}',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10.0,
+                                    // fontWeight: FontWeight.bold,
                                   ),
-                                  timbrada
-                                      ? Text(
-                                          'Timbrada ${Factura[index].timbrada}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      : SizedBox(),
-                                  Text(
-                                    'Clasificación',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
+                                ),
+                              ]),
+                            ),
+                            Expanded(
+                                child: Column(children: [
+                              Text(
+                                'Retención:',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                                softWrap: false,
+                                style: TextStyle(
+                                    color: Colors.teal[800],
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10.0),
+                              ),
+                              Text(
+                                '${Factura[index].retencion}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                                softWrap: false,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 10.0,
+                                  //   fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ])),
+                            Expanded(
+                              child: Column(children: [
+                                Text(
+                                  'Total:',
+                                  style: TextStyle(
+                                      color: Colors.teal[800],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  '${Factura[index].total}',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10.0,
+                                    // fontWeight: FontWeight.bold,
                                   ),
-                                  Text(
-                                    '${Factura[index].clasificacion}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'RFC',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].rfc}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Número',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].numero}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Municipio',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].municipio}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Código Postal',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].codigo_postal}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Destinatario',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].destinatario}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Autopistas',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].autopistas}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //   fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'SubTotal',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].subtotal}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //  fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Retención',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${Factura[index].retencion}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.0,
-                                      //   fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ))
-                            ]),
-                          ]),
-                    ))),
-          );
+                                ),
+                              ]),
+                            )
+                          ])))))
+                ],
+              ));
         });
 
     final body = Column(children: [
