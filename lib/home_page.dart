@@ -113,7 +113,7 @@ class Consulta {
 
   factory Consulta.fromJson(Map<String, dynamic> parsedJson) {
     return Consulta(
-        no_pedido: parsedJson['no_pedido'].toString(),
+        no_pedido: parsedJson['num_pedido'].toString(),
         carta_porte: parsedJson['carta_porte'].toString(),
         factura: parsedJson['factura'],
         status_guia: parsedJson['status_guia'],

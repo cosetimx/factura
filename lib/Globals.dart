@@ -5,6 +5,6 @@ String PASSWD = "";
 String NOMBRE = "";
 String TIPO = "";
 String USERLIS = "";
-String Version = '1.12.10';
+String Version = '1.12.20';
 
-// Version 1.12.00 Precio en Vales
+// Version 1.12.20 Precio en Vales
