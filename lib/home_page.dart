@@ -27,7 +27,7 @@ class Consulta {
   String factura;
   String carta_porte;
   String status_guia;
-  String timbrada;
+  //String timbrada;
   String cliente;
   /* String rfc_cliente;
   String calle_cliente;
@@ -71,7 +71,7 @@ class Consulta {
     required this.carta_porte,
     required this.factura,
     required this.status_guia,
-    required this.timbrada,
+    //required this.timbrada,
     required this.cliente,
     /* required this.rfc_cliente,
     required this.calle_cliente,
@@ -113,12 +113,12 @@ class Consulta {
 
   factory Consulta.fromJson(Map<String, dynamic> parsedJson) {
     return Consulta(
-        no_pedido: parsedJson['num_pedido'].toString(),
-        carta_porte: parsedJson['carta_porte'].toString(),
-        factura: parsedJson['factura'],
-        status_guia: parsedJson['status_guia'],
-        timbrada: parsedJson['timbrada'] ?? '',
-        cliente: parsedJson['cliente'],
+        no_pedido: parsedJson['num_pedido'].toString() ?? '',
+        carta_porte: parsedJson['carta_porte'].toString() ?? '',
+        factura: parsedJson['factura'] ?? '',
+        status_guia: parsedJson['status_guia'] ?? '',
+       // timbrada: parsedJson['timbrada'] ?? '',
+        cliente: parsedJson['cliente'] ?? '',
         /*  rfc_cliente: parsedJson['rfc_cliente'],
         calle_cliente: parsedJson['calle_cliente'],
         numero_cliente: parsedJson['numero_cliente'],
@@ -126,34 +126,34 @@ class Consulta {
         municipio_cliente: parsedJson['municipio_cliente'],
         localidad_cliente: parsedJson['localidad_cliente'],* /
         cp_cliente: parsedJson['cp_cliente'].toString(), */
-        remitente: parsedJson['remitente'],
-        rfc_remi: parsedJson['rfc_remi'],
-        calle_remi: parsedJson['calle_remi'],
-        numero_remi: parsedJson['numero_remi'],
-        colonia_remi: parsedJson['colonia_remi'],
-        municipio_remi: parsedJson['municipio_remi'],
-        localidad_remi: parsedJson['localidad_remi'],
-        cp_remi: parsedJson['cp_remi'].toString(),
-        destinatario: parsedJson['destinatario'],
-        rfc_desti: parsedJson['rfc_desti'],
-        calle_desti: parsedJson['calle_desti'],
-        numero_desti: parsedJson['numero_desti'],
-        colonia_desti: parsedJson['colonia_desti'],
-        municipio_desti: parsedJson['municipio_desti'],
-        localidad_desti: parsedJson['localidad_desti'],
-        cp_desti: parsedJson['cp_desti'].toString(),
-        flete: double.parse(parsedJson['Flete']).toStringAsFixed(2),
-        autopistas: double.parse(parsedJson['Autopistas']).toStringAsFixed(2),
-        otros: double.parse(parsedJson['Otros']).toStringAsFixed(2),
-        subtotal: double.parse(parsedJson['Subtotal']).toStringAsFixed(2),
-        iva: double.parse(parsedJson['IVA']).toStringAsFixed(2),
-        retencion: double.parse(parsedJson['Retencion']).toStringAsFixed(2),
-        total: double.parse(parsedJson['Total']).toStringAsFixed(2),
-        moneda: parsedJson['Moneda'],
-        fecha: parsedJson['Fecha'],
-        tipo: parsedJson['tipo'],
-        clasificacion: parsedJson['clasificacion'],
-        operador: parsedJson['operador'],
+        remitente: parsedJson['remitente'] ?? '',
+        rfc_remi: parsedJson['rfc_remi'] ?? '',
+        calle_remi: parsedJson['calle_remi'] ?? '',
+        numero_remi: parsedJson['numero_remi'] ?? '',
+        colonia_remi: parsedJson['colonia_remi'] ?? '',
+        municipio_remi: parsedJson['municipio_remi'] ?? '',
+        localidad_remi: parsedJson['localidad_remi'] ?? '',
+        cp_remi: parsedJson['cp_remi'].toString() ?? '',
+        destinatario: parsedJson['destinatario'] ?? '',
+        rfc_desti: parsedJson['rfc_desti'] ?? '',
+        calle_desti: parsedJson['calle_desti'] ?? '',
+        numero_desti: parsedJson['numero_desti'] ?? '',
+        colonia_desti: parsedJson['colonia_desti'] ?? '',
+        municipio_desti: parsedJson['municipio_desti'] ?? '',
+        localidad_desti: parsedJson['localidad_desti'] ?? '',
+        cp_desti: parsedJson['cp_desti'].toString() ?? '',
+        flete: double.parse(parsedJson['Flete']).toStringAsFixed(2) ?? '',
+        autopistas: double.parse(parsedJson['Autopistas']).toStringAsFixed(2) ?? '',
+        otros: double.parse(parsedJson['Otros']).toStringAsFixed(2) ?? '',
+        subtotal: double.parse(parsedJson['Subtotal']).toStringAsFixed(2) ?? '',
+        iva: double.parse(parsedJson['IVA']).toStringAsFixed(2) ?? '',
+        retencion: double.parse(parsedJson['Retencion']).toStringAsFixed(2) ?? '',
+        total: double.parse(parsedJson['Total']).toStringAsFixed(2) ?? '',
+        moneda: parsedJson['Moneda'] ?? '',
+        fecha: parsedJson['Fecha'] ?? '',
+        tipo: parsedJson['tipo'] ?? '',
+        clasificacion: parsedJson['clasificacion'] ?? '',
+        operador: parsedJson['operador'] ?? '',
         remolque: parsedJson['remolque'] ?? '');
   }
 }
@@ -531,7 +531,7 @@ class HomePageState extends State<HomePageMap> {
 
     final jsonResponse = json.decode(response.body);
     if (response.statusCode == 200) {
-      try {
+    // try {
         List Szs = jsonResponse['Result'][1]['Otros'];
 
         int Sizes = Szs.length;
@@ -576,7 +576,7 @@ class HomePageState extends State<HomePageMap> {
             });
           }
         }
-      } catch (e) {
+     /* } catch (e) {
         print('Error $e');
         showDialog(
             context: context,
@@ -587,7 +587,7 @@ class HomePageState extends State<HomePageMap> {
                       'Error Folio no Encontrado o mal capturado, Favor de Verificar '),
                   actions: <Widget>[
                     CupertinoDialogAction(
-                      child: Text('NO'),
+                      child: Text('Cerrar'),
                       onPressed: () async {
                         Navigator.of(context).pop();
                         setState(() {});
@@ -595,7 +595,7 @@ class HomePageState extends State<HomePageMap> {
                     ),
                   ]);
             });
-      }
+      } */
     } else {
       showDialog(
           context: context,
