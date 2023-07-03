@@ -23,19 +23,19 @@ String USERLIS = globals.USERLIS;
 bool vacia = false;
 
 class Consulta {
-  String no_guia;
+  String no_pedido;
   String factura;
   String carta_porte;
   String status_guia;
   String timbrada;
   String cliente;
-  String rfc_cliente;
+  /* String rfc_cliente;
   String calle_cliente;
   String numero_cliente;
   String colonia_cliente;
   String municipio_cliente;
   String localidad_cliente;
-  String cp_cliente;
+  String cp_cliente; */
   String remitente;
   String rfc_remi;
   String calle_remi;
@@ -67,19 +67,19 @@ class Consulta {
   String operador;
 
   Consulta({
-    required this.no_guia,
+    required this.no_pedido,
     required this.carta_porte,
     required this.factura,
     required this.status_guia,
     required this.timbrada,
     required this.cliente,
-    required this.rfc_cliente,
+    /* required this.rfc_cliente,
     required this.calle_cliente,
     required this.numero_cliente,
     required this.colonia_cliente,
     required this.municipio_cliente,
     required this.localidad_cliente,
-    required this.cp_cliente,
+    required this.cp_cliente, */
     required this.remitente,
     required this.rfc_remi,
     required this.calle_remi,
@@ -113,19 +113,19 @@ class Consulta {
 
   factory Consulta.fromJson(Map<String, dynamic> parsedJson) {
     return Consulta(
-        no_guia: parsedJson['no_guia'].toString(),
+        no_pedido: parsedJson['no_pedido'].toString(),
         carta_porte: parsedJson['carta_porte'].toString(),
         factura: parsedJson['factura'],
         status_guia: parsedJson['status_guia'],
         timbrada: parsedJson['timbrada'] ?? '',
         cliente: parsedJson['cliente'],
-        rfc_cliente: parsedJson['rfc_cliente'],
+        /*  rfc_cliente: parsedJson['rfc_cliente'],
         calle_cliente: parsedJson['calle_cliente'],
         numero_cliente: parsedJson['numero_cliente'],
         colonia_cliente: parsedJson['colonia_cliente'],
         municipio_cliente: parsedJson['municipio_cliente'],
-        localidad_cliente: parsedJson['localidad_cliente'],
-        cp_cliente: parsedJson['cp_cliente'].toString(),
+        localidad_cliente: parsedJson['localidad_cliente'],* /
+        cp_cliente: parsedJson['cp_cliente'].toString(), */
         remitente: parsedJson['remitente'],
         rfc_remi: parsedJson['rfc_remi'],
         calle_remi: parsedJson['calle_remi'],
@@ -177,9 +177,11 @@ class OtrosConceptos {
     return OtrosConceptos(
       //  id: parsedJson['id'],
       desc_otro: parsedJson['desc_otro'],
-      monto: double.parse( parsedJson['monto']).toStringAsFixed(2),
-      monto_iva_otro: double.parse(parsedJson['monto_iva_otro']).toStringAsFixed(2),
-      monto_retencion: double.parse(parsedJson['monto_retencion']).toStringAsFixed(2),
+      monto: double.parse(parsedJson['monto']).toStringAsFixed(2),
+      monto_iva_otro:
+          double.parse(parsedJson['monto_iva_otro']).toStringAsFixed(2),
+      monto_retencion:
+          double.parse(parsedJson['monto_retencion']).toStringAsFixed(2),
       total: double.parse(parsedJson['total']).toStringAsFixed(2),
     );
   }
@@ -529,52 +531,52 @@ class HomePageState extends State<HomePageMap> {
 
     final jsonResponse = json.decode(response.body);
     if (response.statusCode == 200) {
-       try {
-      List Szs = jsonResponse['Result'][1]['Otros'];
+      try {
+        List Szs = jsonResponse['Result'][1]['Otros'];
 
-      int Sizes = Szs.length;
+        int Sizes = Szs.length;
 
-      if (jsonResponse['success'] == 1) {
-        var Datos = await jsonResponse['Result'][0]['Factura'][0];
+        if (jsonResponse['success'] == 1) {
+          var Datos = await jsonResponse['Result'][0]['Factura'][0];
 
-        Consulta factura = new Consulta.fromJson(Datos);
-        cargado = true;
+          Consulta factura = new Consulta.fromJson(Datos);
+          cargado = true;
 
-        switch (factura.status_guia) {
-          case 'A':
-            pendiente = true;
-            _Estatus = 'Pendiente';
-            break;
-          case 'B':
-            cancelada = true;
-            _Estatus = 'Cancelada';
-            break;
-          case 'C':
-            timbrada = true;
-            _Estatus = 'Confirmada';
-            break;
-          case 'R':
-            regresar = true;
-            _Estatus = 'Regreso';
-            break;
-          case 'T':
-            pendiente = true;
-            _Estatus = 'Transito';
-            break;
-        }
+          switch (factura.status_guia) {
+            case 'A':
+              pendiente = true;
+              _Estatus = 'Pendiente';
+              break;
+            case 'B':
+              cancelada = true;
+              _Estatus = 'Cancelada';
+              break;
+            case 'C':
+              timbrada = true;
+              _Estatus = 'Confirmada';
+              break;
+            case 'R':
+              regresar = true;
+              _Estatus = 'Regreso';
+              break;
+            case 'T':
+              pendiente = true;
+              _Estatus = 'Transito';
+              break;
+          }
 
-        setState(() {
-          Factura.add(factura);
-        });
-        for (var i = 0; i < Sizes; i++) {
-          var ODatos = jsonResponse['Result'][1]['Otros'][i];
-          OtrosConceptos OtrosDatos = new OtrosConceptos.fromJson(ODatos);
           setState(() {
-            OtrosConcepts.add(OtrosDatos);
+            Factura.add(factura);
           });
+          for (var i = 0; i < Sizes; i++) {
+            var ODatos = jsonResponse['Result'][1]['Otros'][i];
+            OtrosConceptos OtrosDatos = new OtrosConceptos.fromJson(ODatos);
+            setState(() {
+              OtrosConcepts.add(OtrosDatos);
+            });
+          }
         }
-      }
-       } catch (e) {
+      } catch (e) {
         print('Error $e');
         showDialog(
             context: context,
@@ -593,7 +595,7 @@ class HomePageState extends State<HomePageMap> {
                     ),
                   ]);
             });
-      } 
+      }
     } else {
       showDialog(
           context: context,
@@ -674,7 +676,7 @@ class HomePageState extends State<HomePageMap> {
           primary: Colors.teal,
           fixedSize: Size.fromWidth(100),
           padding: EdgeInsets.all(10)),
-      child: Text('Aceptar'), //Icon(Icons.check),
+      child: Text('Facturar'), //Icon(Icons.check),
       onPressed: () async {
         await showDialog(
             context: context,
@@ -713,7 +715,7 @@ class HomePageState extends State<HomePageMap> {
           primary: Colors.teal,
           fixedSize: Size.fromWidth(100),
           padding: EdgeInsets.all(10)),
-      child: Text('Aceptar'), //Icon(Icons.check),
+      child: Text('Regresar'), //Icon(Icons.check),
       onPressed: () async {
         await showDialog(
             context: context,
@@ -819,141 +821,148 @@ class HomePageState extends State<HomePageMap> {
         child: Padding(
             padding: EdgeInsets.all(6.0),
             child:
-            Column(children: [
-              Text('Otros Concetos', style: TextStyle(
-                                      color: Colors.teal[800],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.0),),
-             Row(children: [
-              Expanded(
-                  child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: OtrosConcepts.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                            child: 
-                            Column(children: [                            Row(children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
 
-                                Row(children: [
-                                  Text(
-                                    'Descripción: ',
-                                    style: TextStyle(
-                                        color: Colors.teal[800],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '${OtrosConcepts[index].desc_otro}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 10.0,
-                                      // fontWeight: FontWeight.bold,
+            
+             Column(children: [
+              Text(
+                'Otros Concetos',
+                style: TextStyle(
+                    color: Colors.teal[800],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0),
+              ),
+              Row(children: [
+                Expanded(
+                    child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: OtrosConcepts.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                              child: Column(children: [
+                            Row(children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Row(children: [
+                                      Text(
+                                        'Descripción: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${OtrosConcepts[index].desc_otro}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        'IVA: ',
+                                        style: TextStyle(
+                                            color: Colors.teal[800],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      ),
+                                      Text(
+                                        '${OtrosConcepts[index].monto_iva_otro}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ]),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(children: [
+                                    Text(
+                                      'Monto: ',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.teal[800],
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10.0),
                                     ),
-                                  ),
-                                ]),
-                                Row(children: [
+                                    Text(
+                                      '${OtrosConcepts[index].monto}',
+                                      style: TextStyle(
+                                        fontSize: 10.0,
+                                        color: Colors.black,
+                                        //  fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ]),
+                                  Row(children: [
+                                    Text(
+                                      'Retención: ',
+                                      style: TextStyle(
+                                          color: Colors.teal[800],
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10.0),
+                                    ),
+                                    Text(
+                                      '${OtrosConcepts[index].monto_retencion}',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 3,
+                                      softWrap: false,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10.0,
+                                        //  fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ])
+                                ],
+                              )),
+                              Expanded(
+                                child: Column(children: [
                                   Text(
-                                    'IVA: ',
+                                    'Total',
                                     style: TextStyle(
                                         color: Colors.teal[800],
                                         fontWeight: FontWeight.bold,
                                         fontSize: 10.0),
                                   ),
                                   Text(
-                                    '${OtrosConcepts[index].monto_iva_otro}',
+                                    '${OtrosConcepts[index].total} ',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,
                                     softWrap: false,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 10.0,
-                                      // fontWeight: FontWeight.bold,
+                                      //  fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ]),
-
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(children: [
-                                Text(
-                                  'Monto: ',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.teal[800],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.0),
-                                ),
-                                Text(
-                                  '${OtrosConcepts[index].monto}',
-                                  style: TextStyle(
-                                    fontSize: 10.0,
-                                    color: Colors.black,
-                                    //  fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ]),
-                              Row(children: [
-                                Text(
-                                  'Retención: ',
-                                  style: TextStyle(
-                                      color: Colors.teal[800],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.0),
-                                ),
-                                Text(
-                                  '${OtrosConcepts[index].monto_retencion}',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                  softWrap: false,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10.0,
-                                    //  fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ])
-                            ],
-                          )),
-                          Expanded(
-                            child: Column(children: [
-                              Text(
-                                'Total',
-                                style: TextStyle(
-                                    color: Colors.teal[800],
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10.0),
-                              ),
-                              Text(
-                                '${OtrosConcepts[index].total} ',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
-                                softWrap: false,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 10.0,
-                                  //  fontWeight: FontWeight.bold,
-                                ),
                               ),
                             ]),
-                          ),
-                        ]),                          Divider(height: 5,color: Colors.teal,)
-             ])
-                        );
-                      }))
-            ]), 
-            ])));
+                            Divider(
+                              height: 5,
+                              color: Colors.teal,
+                            )
+                          ]));
+                        }))
+              ]),
+            ])
+            ));
 
     final cancela = Card(
         elevation: 18.0,
@@ -1052,14 +1061,14 @@ class HomePageState extends State<HomePageMap> {
                                     Column(
                                       children: [
                                         Text(
-                                          'Guía:',
+                                          'Pedido:',
                                           style: TextStyle(
                                               color: Colors.teal[800],
                                               fontWeight: FontWeight.bold,
                                               fontSize: 10.0),
                                         ),
                                         Text(
-                                          '${Factura[index].no_guia}',
+                                          '${Factura[index].no_pedido}',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 10.0,
@@ -1194,7 +1203,7 @@ class HomePageState extends State<HomePageMap> {
                                             fontSize: 10.0),
                                       ),
                                       Text(
-                                        '${Factura[index].rfc_cliente}',
+                                        '${Factura[index].rfc_remi}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         softWrap: false,
@@ -1214,7 +1223,7 @@ class HomePageState extends State<HomePageMap> {
                                             fontSize: 10.0),
                                       ),
                                       Text(
-                                        '${Factura[index].municipio_cliente}',
+                                        '${Factura[index].municipio_remi}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         softWrap: false,
@@ -1234,7 +1243,7 @@ class HomePageState extends State<HomePageMap> {
                                             fontSize: 10.0),
                                       ),
                                       Text(
-                                        '${Factura[index].localidad_cliente}',
+                                        '${Factura[index].localidad_remi}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         softWrap: false,
@@ -1254,7 +1263,7 @@ class HomePageState extends State<HomePageMap> {
                                             fontSize: 10.0),
                                       ),
                                       Text(
-                                        '${Factura[index].numero_cliente}',
+                                        '${Factura[index].numero_remi}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         softWrap: false,
@@ -1274,7 +1283,7 @@ class HomePageState extends State<HomePageMap> {
                                             fontSize: 10.0),
                                       ),
                                       Text(
-                                        '${Factura[index].colonia_cliente}',
+                                        '${Factura[index].colonia_remi}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         softWrap: false,
@@ -1294,7 +1303,7 @@ class HomePageState extends State<HomePageMap> {
                                             fontSize: 10.0),
                                       ),
                                       Text(
-                                        '${Factura[index].calle_cliente}',
+                                        '${Factura[index].calle_remi}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         softWrap: false,
@@ -1314,7 +1323,7 @@ class HomePageState extends State<HomePageMap> {
                                             fontSize: 10.0),
                                       ),
                                       Text(
-                                        '${Factura[index].cp_cliente}',
+                                        '${Factura[index].cp_remi}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         softWrap: false,
@@ -1812,7 +1821,9 @@ class HomePageState extends State<HomePageMap> {
 
     final body = Column(children: [
       BotonConsulta,
-      Column(children: [List, ListOtros, !timbrada ? SizedBox() : cancela])
+      Column(children: [List,
+      OtrosConcepts.isNotEmpty ? 
+       ListOtros: SizedBox(), !timbrada ? SizedBox() : cancela])
     ]);
 
     return cargado
