@@ -12,10 +12,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async{
   await WidgetsFlutterBinding.ensureInitialized();
-  ByteData data = await
-  rootBundle.load('assets/cert/gdig2.crt.pem');
+   ByteData data = await  rootBundle.load('assets/cert/gdig2.crt.pem');
   SecurityContext context = SecurityContext.defaultContext;
-  context.setTrustedCertificatesBytes(data.buffer.asUint8List());
+   context.setTrustedCertificatesBytes(data.buffer.asUint8List());
 
   runApp(MyApp());
 }

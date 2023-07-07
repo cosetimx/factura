@@ -117,7 +117,7 @@ class Consulta {
         carta_porte: parsedJson['carta_porte'].toString() ?? '',
         factura: parsedJson['factura'] ?? '',
         status_guia: parsedJson['status_guia'] ?? '',
-       // timbrada: parsedJson['timbrada'] ?? '',
+        // timbrada: parsedJson['timbrada'] ?? '',
         cliente: parsedJson['cliente'] ?? '',
         /*  rfc_cliente: parsedJson['rfc_cliente'],
         calle_cliente: parsedJson['calle_cliente'],
@@ -143,11 +143,13 @@ class Consulta {
         localidad_desti: parsedJson['localidad_desti'] ?? '',
         cp_desti: parsedJson['cp_desti'].toString() ?? '',
         flete: double.parse(parsedJson['Flete']).toStringAsFixed(2) ?? '',
-        autopistas: double.parse(parsedJson['Autopistas']).toStringAsFixed(2) ?? '',
+        autopistas:
+            double.parse(parsedJson['Autopistas']).toStringAsFixed(2) ?? '',
         otros: double.parse(parsedJson['Otros']).toStringAsFixed(2) ?? '',
         subtotal: double.parse(parsedJson['Subtotal']).toStringAsFixed(2) ?? '',
         iva: double.parse(parsedJson['IVA']).toStringAsFixed(2) ?? '',
-        retencion: double.parse(parsedJson['Retencion']).toStringAsFixed(2) ?? '',
+        retencion:
+            double.parse(parsedJson['Retencion']).toStringAsFixed(2) ?? '',
         total: double.parse(parsedJson['Total']).toStringAsFixed(2) ?? '',
         moneda: parsedJson['Moneda'] ?? '',
         fecha: parsedJson['Fecha'] ?? '',
@@ -422,7 +424,9 @@ class HomePageState extends State<HomePageMap> {
   Future<void> _regresar() async {
     String factura = NoFact.text;
     String user = globals.USERS;
-    String coms = descripcion;
+    String coms = controllerDescripcion.text ?? descripcion;
+
+    coms = coms.replaceAll(' ', '_');
 
     String URLs =
         "https://www.halcontracking.com/php/factura/regresar.php?fact=$factura&user=$user&coms=$coms";
@@ -531,52 +535,52 @@ class HomePageState extends State<HomePageMap> {
 
     final jsonResponse = json.decode(response.body);
     if (response.statusCode == 200) {
-    // try {
-        List Szs = jsonResponse['Result'][1]['Otros'];
+      // try {
+      List Szs = jsonResponse['Result'][1]['Otros'];
 
-        int Sizes = Szs.length;
+      int Sizes = Szs.length;
 
-        if (jsonResponse['success'] == 1) {
-          var Datos = await jsonResponse['Result'][0]['Factura'][0];
+      if (jsonResponse['success'] == 1) {
+        var Datos = await jsonResponse['Result'][0]['Factura'][0];
 
-          Consulta factura = new Consulta.fromJson(Datos);
-          cargado = true;
+        Consulta factura = new Consulta.fromJson(Datos);
+        cargado = true;
 
-          switch (factura.status_guia) {
-            case 'A':
-              pendiente = true;
-              _Estatus = 'Pendiente';
-              break;
-            case 'B':
-              cancelada = true;
-              _Estatus = 'Cancelada';
-              break;
-            case 'C':
-              timbrada = true;
-              _Estatus = 'Confirmada';
-              break;
-            case 'R':
-              regresar = true;
-              _Estatus = 'Regreso';
-              break;
-            case 'T':
-              pendiente = true;
-              _Estatus = 'Transito';
-              break;
-          }
-
-          setState(() {
-            Factura.add(factura);
-          });
-          for (var i = 0; i < Sizes; i++) {
-            var ODatos = jsonResponse['Result'][1]['Otros'][i];
-            OtrosConceptos OtrosDatos = new OtrosConceptos.fromJson(ODatos);
-            setState(() {
-              OtrosConcepts.add(OtrosDatos);
-            });
-          }
+        switch (factura.status_guia) {
+          case 'A':
+            pendiente = true;
+            _Estatus = 'Pendiente';
+            break;
+          case 'B':
+            cancelada = true;
+            _Estatus = 'Cancelada';
+            break;
+          case 'C':
+            timbrada = true;
+            _Estatus = 'Confirmada';
+            break;
+          case 'R':
+            regresar = true;
+            _Estatus = 'Regreso';
+            break;
+          case 'T':
+            pendiente = true;
+            _Estatus = 'Transito';
+            break;
         }
-     /* } catch (e) {
+
+        setState(() {
+          Factura.add(factura);
+        });
+        for (var i = 0; i < Sizes; i++) {
+          var ODatos = jsonResponse['Result'][1]['Otros'][i];
+          OtrosConceptos OtrosDatos = new OtrosConceptos.fromJson(ODatos);
+          setState(() {
+            OtrosConcepts.add(OtrosDatos);
+          });
+        }
+      }
+      /* } catch (e) {
         print('Error $e');
         showDialog(
             context: context,
@@ -820,10 +824,7 @@ class HomePageState extends State<HomePageMap> {
         clipBehavior: Clip.antiAlias,
         child: Padding(
             padding: EdgeInsets.all(6.0),
-            child:
-
-            
-             Column(children: [
+            child: Column(children: [
               Text(
                 'Otros Concetos',
                 style: TextStyle(
@@ -961,8 +962,7 @@ class HomePageState extends State<HomePageMap> {
                           ]));
                         }))
               ]),
-            ])
-            ));
+            ])));
 
     final cancela = Card(
         elevation: 18.0,
@@ -1821,9 +1821,11 @@ class HomePageState extends State<HomePageMap> {
 
     final body = Column(children: [
       BotonConsulta,
-      Column(children: [List,
-      OtrosConcepts.isNotEmpty ? 
-       ListOtros: SizedBox(), !timbrada ? SizedBox() : cancela])
+      Column(children: [
+        List,
+        OtrosConcepts.isNotEmpty ? ListOtros : SizedBox(),
+        !timbrada ? SizedBox() : cancela
+      ])
     ]);
 
     return cargado
